@@ -1,0 +1,22 @@
+{
+  "name": "api_bbddsoporte",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node App.js",
+    "dev": "node --watch App.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "2.8.5",
+    "dotenv": "16.3.1",
+    "express": "4.18.2",
+    "morgan": "1.10.0",
+    "mysql2": "3.5.2",
+    "sequelize": "6.32.1"
+  }
+}
