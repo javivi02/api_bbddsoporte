@@ -5,7 +5,7 @@ const router = Router()
 
 router.get('/api/portatiles', getPortatiles)
 
-router.get('/api/portatil:id', getPortatil)
+router.get('/api/portatil/:id', getPortatil)
 
 
 export default router
