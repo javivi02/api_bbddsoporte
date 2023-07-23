@@ -5,7 +5,8 @@ import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 import { PORT } from './src/config.js'
 import { sequelize } from './src/bbdd/dbConnection.js'
-import listaPortatiles from './src/routes/portatiles.route.js'
+import portatiles from './src/routes/portatiles.route.js'
+import auth from './src/routes/auth.route.js'
 
 // initialization
 const app = express()
@@ -25,7 +26,7 @@ try {
   console.error('Unable to connect to the database:', error)
 }
 
-app.use(listaPortatiles)
+app.use(portatiles, auth)
 
 // static files
 app.use(express.static(join(__dirname, 'public')))

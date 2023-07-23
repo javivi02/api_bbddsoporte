@@ -1,4 +1,6 @@
-export const modeloPortatiles = (sequelize, DataTypes) => {
+import { DataTypes } from 'sequelize'
+
+export const modeloPortatiles = (sequelize) => {
 
   return sequelize.define('Portatiles', {
     PortatilID: {

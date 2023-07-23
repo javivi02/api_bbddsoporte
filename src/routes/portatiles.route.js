@@ -1,11 +1,12 @@
 import { Router } from 'express'
-import { getPortatil, getPortatiles } from '../controller/portatilesController.js'
+import { getPortatilController, getPortatilesController } from '../controller/portatilesController.js'
+import { logMiddleware } from '../middleware/log.js'
+import { checkSession } from '../middleware/session.js'
 
 const router = Router()
 
-router.get('/api/portatiles', getPortatiles)
+router.get('/api/portatiles', logMiddleware, checkSession, getPortatilesController)
 
-router.get('/api/portatil/:id', getPortatil)
-
+router.get('/api/portatil/:id', getPortatilController)
 
 export default router

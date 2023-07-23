@@ -1,8 +1,8 @@
-import { modeloPortatiles } from '../bbdd/models/Portatiles.js'
 import { sequelize } from '../bbdd/dbConnection.js'
-import { DataTypes } from 'sequelize'
+import { modeloPortatiles } from '../bbdd/models/Portatiles.js'
 
-const Portatiles = modeloPortatiles(sequelize, DataTypes)
+const Portatiles = modeloPortatiles(sequelize)
+
 export const getPortatilesServices = async () => {
 
   return await Portatiles.findAll()
