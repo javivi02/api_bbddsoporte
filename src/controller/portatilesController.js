@@ -1,7 +1,6 @@
 import { getPortatilesServices, getPortatilServices } from '../services/portatilesServices.js'
 
 export const getPortatilesController = async (req, res) => {
-  console.log(req.user)
   const portatiles = await getPortatilesServices()
   res.send(portatiles)
 }

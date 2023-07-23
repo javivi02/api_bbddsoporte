@@ -9,6 +9,13 @@ const checkSession = (req, res, next) => {
     // indicado en la parte del login
 
     const isUser = verifyToken(`${jwt}`)
+    req.user = isUser
+    next()
+
+    /*
+    const isUser = verifyToken(`${jwt}`)
+
+    console.log( isUser )
 
     if (!isUser) {
       res.status(401)
@@ -17,10 +24,13 @@ const checkSession = (req, res, next) => {
       req.user = isUser
       next()
     }
+
+     */
+
   } catch (e) {
-    console.log({ e })
+    console.log(e.name)
     res.status(400)
-    res.send('SESSION_NO_VALIDADA')
+    res.send(e.name.toString().toUpperCase())
   }
 }
 
