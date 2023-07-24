@@ -28,9 +28,9 @@ const checkSession = (req, res, next) => {
      */
 
   } catch (e) {
-    console.log(e.name)
+    //console.log(e.message)
     res.status(400)
-    res.send(e.name.toString().toUpperCase())
+    res.send(e.message.toString().toUpperCase())
   }
 }
 
