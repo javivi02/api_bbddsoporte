@@ -29,7 +29,7 @@ const checkSession = (req, res, next) => {
 
   } catch (e) {
     //console.log(e.message)
-    res.status(400)
+    res.status(200)
     res.send(e.message.toString().toUpperCase())
   }
 }

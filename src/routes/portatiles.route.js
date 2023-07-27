@@ -7,6 +7,6 @@ const router = Router()
 
 router.get('/api/portatiles', logMiddleware, checkSession, getPortatilesController)
 
-router.get('/api/portatil/:id', getPortatilController)
+router.get('/api/portatil/:id', checkSession, getPortatilController)
 
 export default router

@@ -33,3 +33,8 @@ export const registerController = async (req, res) => {
 
   res.send('Usuario creado correctamente')
 }
+
+export const checkController = async (req, res) => {
+  res.status(200)
+  res.send('Usuario con token correcto')
+}
