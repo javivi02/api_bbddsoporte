@@ -6,7 +6,7 @@ const JWT_SECRET = 'clavesecreta'
 
 const generateToken = (id) => {
   return sign({ id }, JWT_SECRET, {
-    expiresIn: '1h',
+    expiresIn: '1m',
   })
 }
 
