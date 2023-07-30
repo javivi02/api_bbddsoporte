@@ -5,34 +5,69 @@ const Prestamos = modeloPrestamos(sequelize)
 
 export const getPrestamosServices = async () => {
 
-  const [results, metadata] = await sequelize.query('SELECT\n' +
-    'Prestamos.PrestamosID,\n' +
-    'Prestamos.PortatilID,\n' +
-    'Prestamos.Fecha_entrega,\n' +
-    'Prestamos.Fecha_devolucion,\n' +
-    'Prestamos.Entregado_a,\n' +
-    'Prestamos.Telefono,\n' +
-    'Prestamos.Email,\n' +
-    'Prestamos.AreaID,\n' +
-    'Prestamos.Motivo,\n' +
-    'Prestamos.Umts,\n' +
-    'Prestamos.Alimentacion,\n' +
-    'Prestamos.Cable_red,\n' +
-    'Prestamos.Raton,\n' +
-    'Prestamos.Usuario,\n' +
-    'Prestamos.Observaciones,\n' +
-    'Portatiles.Portatil,\n' +
-    'Miembros_departamento.Nombre,\n' +
-    'Areas.Area,\n' +
-    'Prestamos.Devolucion_prevista,\n' +
-    'Prestamos.Control_devolucion\n' +
-    'FROM Prestamos\n' +
-    'INNER JOIN Portatiles ON Prestamos.PortatilID = Portatiles.PortatilID\n' +
-    'LEFT OUTER JOIN Usuarios ON Prestamos.Usuario = Usuarios.Usuario\n' +
-    'LEFT OUTER JOIN Miembros_departamento ON Usuarios.Matricula_rtve = Miembros_departamento.Matricula_rtve\n' +
-    'LEFT OUTER JOIN Areas ON Prestamos.AreaID = Areas.AreaID\n' +
-    'ORDER BY Prestamos.PrestamosID DESC')
+  const [results, metadata] = await sequelize.query(`SELECT 
+    Prestamos.PrestamosID, 
+    Prestamos.PortatilID, 
+    Prestamos.Fecha_entrega, 
+    Prestamos.Fecha_devolucion, 
+    Prestamos.Entregado_a, 
+    Prestamos.Telefono, 
+    Prestamos.Email, 
+    Prestamos.AreaID, 
+    Prestamos.Motivo,
+    Prestamos.Umts, 
+    Prestamos.Alimentacion, 
+    Prestamos.Cable_red, 
+    Prestamos.Raton, 
+    Prestamos.Usuario, 
+    Prestamos.Observaciones, 
+    Portatiles.Portatil, 
+    Miembros_departamento.Nombre, 
+    Areas.Area, 
+    Prestamos.Devolucion_prevista, 
+    Prestamos.Control_devolucion 
+    FROM Prestamos 
+    INNER JOIN Portatiles ON Prestamos.PortatilID = Portatiles.PortatilID 
+    LEFT OUTER JOIN Usuarios ON Prestamos.Usuario = Usuarios.Usuario 
+    LEFT OUTER JOIN Miembros_departamento ON Usuarios.Matricula_rtve = Miembros_departamento.Matricula_rtve 
+    LEFT OUTER JOIN Areas ON Prestamos.AreaID = Areas.AreaID 
+    ORDER BY Prestamos.PrestamosID DESC`)
 
   return results
+
+}
+
+export const getPrestamoServices = async (ID) => {
+
+  const [results, metadata] = await sequelize.query(`SELECT 
+    Prestamos.PrestamosID, 
+    Prestamos.PortatilID, 
+    Prestamos.Fecha_entrega, 
+    Prestamos.Fecha_devolucion, 
+    Prestamos.Entregado_a, 
+    Prestamos.Telefono, 
+    Prestamos.Email, 
+    Prestamos.AreaID, 
+    Prestamos.Motivo,
+    Prestamos.Umts, 
+    Prestamos.Alimentacion, 
+    Prestamos.Cable_red, 
+    Prestamos.Raton, 
+    Prestamos.Usuario, 
+    Prestamos.Observaciones, 
+    Portatiles.Portatil, 
+    Miembros_departamento.Nombre, 
+    Areas.Area, 
+    Prestamos.Devolucion_prevista, 
+    Prestamos.Control_devolucion 
+    FROM Prestamos 
+    INNER JOIN Portatiles ON Prestamos.PortatilID = Portatiles.PortatilID 
+    LEFT OUTER JOIN Usuarios ON Prestamos.Usuario = Usuarios.Usuario 
+    LEFT OUTER JOIN Miembros_departamento ON Usuarios.Matricula_rtve = Miembros_departamento.Matricula_rtve 
+    LEFT OUTER JOIN Areas ON Prestamos.AreaID = Areas.AreaID 
+    WHERE Prestamos.PrestamosID = ${ID} 
+    ORDER BY Prestamos.PrestamosID DESC`)
+
+  return results[0]
 
 }

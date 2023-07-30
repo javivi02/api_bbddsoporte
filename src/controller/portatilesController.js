@@ -1,7 +1,17 @@
-import { getPortatilesServices, getPortatilServices } from '../services/portatilesServices.js'
+import {
+  getPortatilesServices,
+  getPortatilesStockServices,
+  getPortatilServices
+} from '../services/portatilesServices.js'
 
 export const getPortatilesController = async (req, res) => {
   const portatiles = await getPortatilesServices()
+  res.send(portatiles)
+}
+
+export const getPortatilesStockController = async (req, res) => {
+
+  const portatiles = await getPortatilesStockServices()
   res.send(portatiles)
 }
 
