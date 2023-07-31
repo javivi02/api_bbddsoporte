@@ -13,7 +13,7 @@ export const loginController = async (req, res) => {
 
   } catch (error) {
     console.log(error)
-    res.send('Error al crear el usuario')
+    res.send('Error al loguear el usuario')
   }
 
 }
