@@ -1,7 +1,7 @@
 import {
   getPortatilesServices,
   getPortatilesStockServices,
-  getPortatilServices
+  getPortatilServices, getUpdateServices
 } from '../services/portatilesServices.js'
 
 export const getPortatilesController = async (req, res) => {
@@ -20,6 +20,14 @@ export const getPortatilesController = async (req, res) => {
 export const getPortatilController = async (req, res) => {
   const { id } = req.params
   const portatil = await getPortatilServices(id)
+  res.send(portatil)
+}
+
+export const getPortatilUpdateController = async (req, res) => {
+  const { id } = req.params
+  const data = req.body
+
+  const portatil = await getUpdateServices(id, data)
   res.send(portatil)
 }
 

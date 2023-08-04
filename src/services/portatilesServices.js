@@ -30,3 +30,17 @@ export const getPortatilServices = async (id) => {
   return await Portatiles.findByPk(id)
 
 }
+
+export const getUpdateServices = async (id, data) => {
+
+  const portatil = await Portatiles.findByPk(id)
+
+  if (!portatil) return "NO EXISTE EL PORTATIL"
+
+  return Portatiles.update(data, {
+    where: {
+      PortatilID: id
+    }
+  })
+
+}

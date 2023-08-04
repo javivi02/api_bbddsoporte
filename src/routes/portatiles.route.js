@@ -1,9 +1,8 @@
 import { Router } from 'express'
 import {
   getPortatilController,
-  getPortatilesController,
+  getPortatilesController, getPortatilUpdateController,
 } from '../controller/portatilesController.js'
-import { logMiddlewareLogin } from '../middleware/logAuth.js'
 import { checkSession } from '../middleware/session.js'
 
 const router = Router()
@@ -11,5 +10,7 @@ const router = Router()
 router.get('/api/portatiles', checkSession, getPortatilesController)
 
 router.get('/api/portatiles/:id', checkSession, getPortatilController)
+
+router.put('/api/portatiles/:id', checkSession, getPortatilUpdateController)
 
 export default router
