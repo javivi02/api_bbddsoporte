@@ -7,6 +7,6 @@ import { checkSession } from '../middleware/session.js'
 const router = Router()
 
 router.get('/api/prestamos', checkSession, getPrestamosController)
-router.get('/api/prestamo/:id', checkSession, getPrestamoController)
+router.get('/api/prestamos/:id', checkSession, getPrestamoController)
 
 export default router

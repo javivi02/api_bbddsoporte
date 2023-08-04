@@ -13,6 +13,8 @@ import prestamos from './src/routes/prestamos.route.js'
 const app = express()
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
+app.disable('x-powered-by') // con esto deshabilitamos la cabecera X-Powered-By: Express
+
 // middlewares
 app.use(morgan('dev'))
 app.use(cors())
