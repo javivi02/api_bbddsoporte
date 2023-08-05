@@ -31,3 +31,10 @@ export const getPortatilUpdateController = async (req, res) => {
   res.send(portatil)
 }
 
+export const getPortatilesPaginationController = async (req, res) => {
+
+
+
+
+}
+

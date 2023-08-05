@@ -44,3 +44,11 @@ export const getUpdateServices = async (id, data) => {
   })
 
 }
+
+export const getPortatilesPaginationServices = async (limit, offset) => {
+
+
+
+
+
+}
