@@ -1,5 +1,6 @@
 import { sequelize } from '../bbdd/dbConnection.js'
 import { modeloPortatiles } from '../bbdd/models/Portatiles.js'
+import { getPagination, getPagingData } from '../utils/pagination.js'
 
 const Portatiles = modeloPortatiles(sequelize)
 
@@ -35,7 +36,7 @@ export const getUpdateServices = async (id, data) => {
 
   const portatil = await Portatiles.findByPk(id)
 
-  if (!portatil) return "NO EXISTE EL PORTATIL"
+  if (!portatil) return 'NO EXISTE EL PORTATIL'
 
   return Portatiles.update(data, {
     where: {
@@ -45,10 +46,17 @@ export const getUpdateServices = async (id, data) => {
 
 }
 
-export const getPortatilesPaginationServices = async (limit, offset) => {
+export const getPortatilesPaginationServices = async (page, per_page) => {
 
+  const { limit, offset } = getPagination(page, per_page)
 
+  try {
 
+    const data = await Portatiles.findAndCountAll({ offset, limit })
+    return getPagingData(data, page, limit)
 
+  } catch (error) {
+    throw new error
+  }
 
 }

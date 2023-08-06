@@ -1,8 +1,10 @@
 import {
+  getPortatilesPaginationServices,
   getPortatilesServices,
   getPortatilesStockServices,
   getPortatilServices, getUpdateServices
 } from '../services/portatilesServices.js'
+import { getPagination } from '../utils/pagination.js'
 
 export const getPortatilesController = async (req, res) => {
 
@@ -33,8 +35,18 @@ export const getPortatilUpdateController = async (req, res) => {
 
 export const getPortatilesPaginationController = async (req, res) => {
 
+  const { page, per_page } = req.query
 
+  try {
+    const portatiles = await getPortatilesPaginationServices(page, per_page)
+    res.send(portatiles)
 
+  } catch (error) {
+    res.status(500).send({
+      message: error.message || 'Ocurrio un error al intentar obtener los portatiles'
+    })
 
+  }
 }
+
 

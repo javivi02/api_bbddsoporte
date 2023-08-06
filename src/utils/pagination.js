@@ -1,61 +1,13 @@
-
-export const paginate = async (model, pageSize, pageLimit, search = {}, order = [], transform) => {
-  try {
-    const limit = parseInt(pageLimit, 10) || 10;
-    const page = parseInt(pageSize, 10) || 1;
-
-    // create an options object
-    let options = {
-      offset: getOffset(page, limit),
-      limit: limit,
-    };
-
-    // check if the search object is empty
-    if (Object.keys(search).length) {
-      options = {options, ...search};
-    }
-
-    // check if the order array is empty
-    if (order && order.length) {
-      options['order'] = order;
-    }
-
-    // take in the model, take in the options
-    let {count, rows} = await model.findAndCountAll(options);
-
-    // check if the transform is a function and is not null
-    if (transform && typeof transform === 'function') {
-      rows = transform(rows);
-    }
-
-    return {
-      previousPage: getPreviousPage(page),
-      currentPage: page,
-      nextPage: getNextPage(page, limit, count),
-      total: count,
-      limit: limit,
-      data: rows
-    }
-  } catch (error) {
-    console.log(error);
-  }
+export const getPagination = (page = 1, per_page = 3) => {
+  const limit = Number(per_page)
+  const offset = (page - 1) * Number(per_page)
+  return { limit, offset }
 }
 
-const getOffset = (page, limit) => {
-  return (page * limit) - limit;
+export const getPagingData = (data, page = 1, limit) => {
+  const { count: totalItems, rows } = data
+  const currentPage = Number(page)
+  const totalPages = Math.ceil(totalItems / limit)
+  return { totalItems, totalPages, currentPage, rows }
 }
 
-const getNextPage = (page, limit, total) => {
-  if ((total/limit) > page) {
-    return page + 1;
-  }
-
-  return null
-}
-
-const getPreviousPage = (page) => {
-  if (page <= 1) {
-    return null
-  }
-  return page - 1;
-}
