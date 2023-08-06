@@ -4,7 +4,6 @@ import {
   getPortatilesStockServices,
   getPortatilServices, getUpdateServices
 } from '../services/portatilesServices.js'
-import { getPagination } from '../utils/pagination.js'
 
 export const getPortatilesController = async (req, res) => {
 

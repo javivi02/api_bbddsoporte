@@ -8,6 +8,7 @@ import { sequelize } from './src/bbdd/dbConnection.js'
 import portatiles from './src/routes/portatiles.route.js'
 import auth from './src/routes/auth.route.js'
 import prestamos from './src/routes/prestamos.route.js'
+import estacionesTrabajo from './src/routes/estacionesTrabajo.route.js'
 
 // initialization
 const app = express()
@@ -29,7 +30,7 @@ try {
   console.error('Unable to connect to the database:', error)
 }
 
-app.use(portatiles, auth, prestamos)
+app.use(portatiles, auth, prestamos, estacionesTrabajo)
 
 // static files
 app.use(express.static(join(__dirname, 'public')))
