@@ -10,4 +10,3 @@ export const getPagingData = (data, page = 1, limit) => {
   const totalPages = Math.ceil(totalItems / limit)
   return { totalItems, totalPages, currentPage, rows }
 }
-

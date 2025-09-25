@@ -7,7 +7,7 @@ const JWT_SECRET = 'clavesecreta'
 
 const generateToken = (id) => {
   const token = sign({ id }, JWT_SECRET, {
-    expiresIn: '2h',
+    expiresIn: '10h'
   })
   logger.info(`Token generado para el usario con ID (${id}) -->`, token)
   return token

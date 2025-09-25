@@ -1,7 +1,6 @@
 import { DataTypes } from 'sequelize'
 
 export const modeloEstacionesTrabajo = (sequelize) => {
-
   return sequelize.define('Estaciones _trabajo', {
     Estaciones_trabajoID: {
       autoIncrement: true,
@@ -84,24 +83,23 @@ export const modeloEstacionesTrabajo = (sequelize) => {
         unique: true,
         using: 'BTREE',
         fields: [
-          { name: 'Estaciones_trabajoID' },
+          { name: 'Estaciones_trabajoID' }
         ]
       },
       {
         name: 'direccion_ip',
         using: 'BTREE',
         fields: [
-          { name: 'Direccion_ip' },
+          { name: 'Direccion_ip' }
         ]
       },
       {
         name: 'identificacion',
         using: 'BTREE',
         fields: [
-          { name: 'Identificacion' },
+          { name: 'Identificacion' }
         ]
-      },
+      }
     ]
   })
-
 }

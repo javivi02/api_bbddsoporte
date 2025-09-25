@@ -4,7 +4,6 @@ import { modeloEstacionesTrabajo } from '../bbdd/models/EstacionesTrabajo.js'
 const estacionesTrabajo = modeloEstacionesTrabajo(sequelize)
 
 export const getEstacionesTrabajoServices = async () => {
-
   const [results, metadata] = await sequelize.query(`SELECT
     \`Estaciones _trabajo\`.Estaciones_trabajoID,
     \`Estaciones _trabajo\`.Identificacion,
@@ -33,5 +32,4 @@ export const getEstacionesTrabajoServices = async () => {
     ORDER BY \`Estaciones _trabajo\`.Estaciones_trabajoID ASC`)
 
   return results
-
 }
