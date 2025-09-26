@@ -1,0 +1,39 @@
+import { getEstacionesTorreServices, createEstacionesTorreService, updateEstacionesTorreService, deleteEstacionesTorreService } from '../services/estacionesTorreServices.js'
+
+export const getEstacionesTorreController = async (req, res) => {
+  const estacionesTorre = await getEstacionesTorreServices()
+  res.send(estacionesTorre)
+}
+
+export const createEstacionesTorreController = async (req, res) => {
+  try {
+    const data = req.body
+    const est = await createEstacionesTorreService(data)
+    res.status(201).send(est)
+  } catch (e) {
+    res.status(400).send(e.message)
+  }
+}
+
+export const updateEstacionesTorreController = async (req, res) => {
+  try {
+    const id = req.params.id
+    const data = req.body
+    const est = await updateEstacionesTorreService(id, data)
+    if (!est) return res.status(404).send('No encontrado')
+    res.send(est)
+  } catch (e) {
+    res.status(400).send(e.message)
+  }
+}
+
+export const deleteEstacionesTorreController = async (req, res) => {
+  try {
+    const id = req.params.id
+    const deleted = await deleteEstacionesTorreService(id)
+    if (!deleted) return res.status(404).send('No encontrado')
+    res.send({ success: true })
+  } catch (e) {
+    res.status(400).send(e.message)
+  }
+}

@@ -1,10 +1,10 @@
 import { sequelize } from '../bbdd/dbConnection.js'
 import { modeloEstacionesTrabajo } from '../bbdd/models/EstacionesTrabajo.js'
 
+
 const estacionesTrabajo = modeloEstacionesTrabajo(sequelize)
 
 export const getEstacionesTrabajoServices = async () => {
-
   const [results, metadata] = await sequelize.query(`SELECT
     \`Estaciones _trabajo\`.Estaciones_trabajoID,
     \`Estaciones _trabajo\`.Identificacion,
@@ -31,7 +31,23 @@ export const getEstacionesTrabajoServices = async () => {
     LEFT OUTER JOIN Edificio ON Areas.EdificioID = Edificio.EdificioID
     LEFT OUTER JOIN Planta ON Areas.PlantaID = Planta.PlantaID
     ORDER BY \`Estaciones _trabajo\`.Estaciones_trabajoID ASC`)
-
   return results
+}
 
+export const createEstacionesTrabajoService = async (data) => {
+  return await estacionesTrabajo.create(data)
+}
+
+export const updateEstacionesTrabajoService = async (id, data) => {
+  const est = await estacionesTrabajo.findByPk(id)
+  if (!est) return null
+  await est.update(data)
+  return est
+}
+
+export const deleteEstacionesTrabajoService = async (id) => {
+  const est = await estacionesTrabajo.findByPk(id)
+  if (!est) return null
+  await est.destroy()
+  return true
 }

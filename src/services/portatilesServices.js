@@ -46,17 +46,24 @@ export const getUpdateServices = async (id, data) => {
 
 }
 
+
 export const getPortatilesPaginationServices = async (page, per_page) => {
-
   const { limit, offset } = getPagination(page, per_page)
-
   try {
-
     const data = await Portatiles.findAndCountAll({ offset, limit })
     return getPagingData(data, page, limit)
-
   } catch (error) {
     throw new error
   }
+}
 
+export const createPortatilService = async (data) => {
+  return await Portatiles.create(data)
+}
+
+export const deletePortatilService = async (id) => {
+  const portatil = await Portatiles.findByPk(id)
+  if (!portatil) return null
+  await portatil.destroy()
+  return true
 }

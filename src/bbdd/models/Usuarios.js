@@ -1,7 +1,6 @@
-import { DataTypes } from 'sequelize'
+import { DataTypes } from 'sequelize';
 
 export const modeloUsuarios = (sequelize) => {
-
   return sequelize.define('Usuarios', {
     UsuariosID: {
       autoIncrement: true,
@@ -20,20 +19,20 @@ export const modeloUsuarios = (sequelize) => {
     Matricula_rtve: {
       type: DataTypes.STRING(8),
       allowNull: true
-    },
+    }
   }, {
     sequelize,
     tableName: 'Usuarios',
     timestamps: false,
     indexes: [
       {
-        name: 'PRIMARY',
+        name: "PRIMARY",
         unique: true,
-        using: 'BTREE',
+        using: "BTREE",
         fields: [
-          { name: 'usuarioID' },
+          { name: "UsuariosID" },
         ]
       },
     ]
-  })
-}
+  });
+};

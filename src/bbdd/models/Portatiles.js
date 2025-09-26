@@ -1,7 +1,6 @@
-import { DataTypes } from 'sequelize'
+import { DataTypes } from 'sequelize';
 
 export const modeloPortatiles = (sequelize) => {
-
   return sequelize.define('Portatiles', {
     PortatilID: {
       autoIncrement: true,
@@ -58,13 +57,20 @@ export const modeloPortatiles = (sequelize) => {
     timestamps: false,
     indexes: [
       {
-        name: 'PRIMARY',
+        name: "PRIMARY",
         unique: true,
-        using: 'BTREE',
+        using: "BTREE",
         fields: [
-          { name: 'PortatilID' },
+          { name: "PortatilID" },
+        ]
+      },
+      {
+        name: "identificacion_pc",
+        using: "BTREE",
+        fields: [
+          { name: "Portatil" },
         ]
       },
     ]
-  })
-}
+  });
+};

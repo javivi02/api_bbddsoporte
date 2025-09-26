@@ -1,7 +1,6 @@
-import { DataTypes } from 'sequelize'
+import { DataTypes } from 'sequelize';
 
 export const modeloPrestamos = (sequelize) => {
-
   return sequelize.define('Prestamos', {
     PrestamosID: {
       autoIncrement: true,
@@ -11,11 +10,7 @@ export const modeloPrestamos = (sequelize) => {
     },
     PortatilID: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'Portatiles',
-        key: 'PortatilID'
-      }
+      allowNull: true
     },
     Fecha_entrega: {
       type: DataTypes.DATE,
@@ -83,21 +78,13 @@ export const modeloPrestamos = (sequelize) => {
     timestamps: false,
     indexes: [
       {
-        name: 'PRIMARY',
+        name: "PRIMARY",
         unique: true,
-        using: 'BTREE',
+        using: "BTREE",
         fields: [
-          { name: 'PrestamosID' },
-        ]
-      },
-      {
-        name: 'fk_prestamos_portatiles',
-        using: 'BTREE',
-        fields: [
-          { name: 'PortatilID' },
+          { name: "PrestamosID" },
         ]
       },
     ]
-  })
-
-}
+  });
+};

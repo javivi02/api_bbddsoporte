@@ -1,9 +1,33 @@
+
 import {
   getPortatilesPaginationServices,
   getPortatilesServices,
   getPortatilesStockServices,
-  getPortatilServices, getUpdateServices
+  getPortatilServices,
+  getUpdateServices,
+  createPortatilService,
+  deletePortatilService
 } from '../services/portatilesServices.js'
+export const createPortatilController = async (req, res) => {
+  try {
+    const data = req.body
+    const portatil = await createPortatilService(data)
+    res.status(201).send(portatil)
+  } catch (e) {
+    res.status(400).send(e.message)
+  }
+}
+
+export const deletePortatilController = async (req, res) => {
+  try {
+    const id = req.params.id
+    const deleted = await deletePortatilService(id)
+    if (!deleted) return res.status(404).send('No encontrado')
+    res.send({ success: true })
+  } catch (e) {
+    res.status(400).send(e.message)
+  }
+}
 
 export const getPortatilesController = async (req, res) => {
 
