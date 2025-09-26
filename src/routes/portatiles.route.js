@@ -2,11 +2,7 @@
 import { Router } from 'express'
 import {
   getPortatilController,
-  getPortatilesController,
-  getPortatilesPaginationController,
-  getPortatilUpdateController,
-  createPortatilController,
-  deletePortatilController
+  getPortatilesController, getPortatilesPaginationController, getPortatilUpdateController, getPortatilDelete
 } from '../controller/portatilesController.js'
 import { checkSession } from '../middleware/session.js'
 

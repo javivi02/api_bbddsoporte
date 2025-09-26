@@ -5,13 +5,22 @@ import { getPagination, getPagingData } from '../utils/pagination.js'
 const Portatiles = modeloPortatiles(sequelize)
 
 export const getPortatilesServices = async () => {
-
   return await Portatiles.findAll()
+}
 
+export const getPortatileDelete = async (id) => {
+  const portatil = await Portatiles.findByPk(id)
+
+  if (!portatil) return 'NO EXISTE EL PORTATIL'
+
+  return Portatiles.destroy({
+    where: {
+      PortatilID: id
+    }
+  })
 }
 
 export const getPortatilesStockServices = async () => {
-
   const [results, metadata] = await sequelize.query('SELECT\n' +
     'PortatilID,\n' +
     'Portatil,\n' +
@@ -23,17 +32,13 @@ export const getPortatilesStockServices = async () => {
     'ORDER BY Portatil')
 
   return results
-
 }
 
 export const getPortatilServices = async (id) => {
-
   return await Portatiles.findByPk(id)
-
 }
 
 export const getUpdateServices = async (id, data) => {
-
   const portatil = await Portatiles.findByPk(id)
 
   if (!portatil) return 'NO EXISTE EL PORTATIL'
@@ -43,7 +48,6 @@ export const getUpdateServices = async (id, data) => {
       PortatilID: id
     }
   })
-
 }
 
 
@@ -53,7 +57,7 @@ export const getPortatilesPaginationServices = async (page, per_page) => {
     const data = await Portatiles.findAndCountAll({ offset, limit })
     return getPagingData(data, page, limit)
   } catch (error) {
-    throw new error
+    throw new error()
   }
 }
 

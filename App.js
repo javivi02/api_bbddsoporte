@@ -22,7 +22,7 @@ app.use(cors())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
-//conexion a la base de datos
+// conexion a la base de datos
 try {
   await sequelize.authenticate()
   console.log('Connection has been established successfully.')
