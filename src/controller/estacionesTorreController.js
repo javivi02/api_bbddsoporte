@@ -1,4 +1,4 @@
-import { getEstacionesTorreServices, createEstacionesTorreService, updateEstacionesTorreService, deleteEstacionesTorreService } from '../services/estacionesTorreServices.js'
+import { getEstacionesTorreServices, createEstacionesTorreService, updateEstacionesTorreService, deleteEstacionesTorreService, getEstacionesTorreUbicacionServices } from '../services/estacionesTorreServices.js'
 
 export const getEstacionesTorreController = async (req, res) => {
   const estacionesTorre = await getEstacionesTorreServices()
@@ -36,4 +36,9 @@ export const deleteEstacionesTorreController = async (req, res) => {
   } catch (e) {
     res.status(400).send(e.message)
   }
+}
+
+export const getEstacionesTorreUbicacionController = async (req, res) => {
+  const estacionesTorreUbicacion = await getEstacionesTorreUbicacionServices()
+  res.send(estacionesTorreUbicacion)
 }
