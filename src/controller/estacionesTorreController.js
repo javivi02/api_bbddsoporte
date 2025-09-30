@@ -1,8 +1,20 @@
-import { getEstacionesTorreServices, createEstacionesTorreService, updateEstacionesTorreService, deleteEstacionesTorreService, getEstacionesTorreUbicacionServices } from '../services/estacionesTorreServices.js'
+import { getEstacionesTorreServices, createEstacionesTorreService, updateEstacionesTorreService, deleteEstacionesTorreService, getEstacionesTorreUbicacionServices, getEstacionesTorreServicesID } from '../services/estacionesTorreServices.js'
 
 export const getEstacionesTorreController = async (req, res) => {
   const estacionesTorre = await getEstacionesTorreServices()
   res.send(estacionesTorre)
+}
+
+export const getEstacionesTorreControllerID = async (req, res) => {
+  try {
+    const id = req.params.id
+    const est = await getEstacionesTorreServicesID(id)
+    if (!est) return res.status(404).send('No encontrado')
+    res.send(est)
+  } catch (e) {
+    res.status(400).send(e.message)
+  }
+
 }
 
 export const createEstacionesTorreController = async (req, res) => {

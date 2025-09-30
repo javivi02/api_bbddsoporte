@@ -8,6 +8,11 @@ export const getEstacionesTorreServices = async () => {
   return await EstacionesTorre.findAll()
 }
 
+export const getEstacionesTorreServicesID = async (id) => {
+  console.log(id)
+  return await EstacionesTorre.findByPk(id)
+}
+
 export const createEstacionesTorreService = async (data) => {
   return await EstacionesTorre.create(data)
 }

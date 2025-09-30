@@ -1,14 +1,15 @@
 
 import { Router } from 'express'
-import { getEstacionesTorreController, createEstacionesTorreController, updateEstacionesTorreController, deleteEstacionesTorreController, getEstacionesTorreUbicacionController } from '../controller/estacionesTorreController.js'
+import { getEstacionesTorreController, createEstacionesTorreController, updateEstacionesTorreController, deleteEstacionesTorreController, getEstacionesTorreUbicacionController, getEstacionesTorreControllerID } from '../controller/estacionesTorreController.js'
 import { checkSession } from '../middleware/session.js'
 
 const router = Router()
 
 router.get('/api/estacionesTorre', checkSession, getEstacionesTorreController)
-router.get('/api/estacionesTorreUbicacion', checkSession, getEstacionesTorreUbicacionController)
+router.get('/api/estacionesTorreUbicacion', getEstacionesTorreUbicacionController)
 router.post('/api/estacionesTorre', checkSession, createEstacionesTorreController)
-router.put('/api/estacionesTorre/:id', checkSession, updateEstacionesTorreController)
+router.get('/api/estacionesTorre/:id', getEstacionesTorreControllerID)
+router.put('/api/estacionesTorre/:id', updateEstacionesTorreController)
 router.delete('/api/estacionesTorre/:id', checkSession, deleteEstacionesTorreController)
 
 export default router
