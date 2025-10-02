@@ -1,4 +1,4 @@
-import { getEstacionesTorreServices, createEstacionesTorreService, updateEstacionesTorreService, deleteEstacionesTorreService, getEstacionesTorreUbicacionServices, getEstacionesTorreServicesID } from '../services/estacionesTorreServices.js'
+import { getEstacionesTorreServices, createEstacionesTorreService, updateEstacionesTorreService, deleteEstacionesTorreService, getEstacionesTorreUbicacionServices, getEstacionesTorreServicesID, getEstacionesTorreUbicacionPaginacionServices } from '../services/estacionesTorreServices.js'
 
 export const getEstacionesTorreController = async (req, res) => {
   const estacionesTorre = await getEstacionesTorreServices()
@@ -53,4 +53,18 @@ export const deleteEstacionesTorreController = async (req, res) => {
 export const getEstacionesTorreUbicacionController = async (req, res) => {
   const estacionesTorreUbicacion = await getEstacionesTorreUbicacionServices()
   res.send(estacionesTorreUbicacion)
+}
+
+export const getEstacionesTorreUbicacionControllerPaginacion = async (req, res) => {
+
+const { page, perPage, word } = req.query
+
+  try {
+    const result = await getEstacionesTorreUbicacionPaginacionServices(page, perPage, word)
+    res.status(200).json({ result })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+
+
 }
