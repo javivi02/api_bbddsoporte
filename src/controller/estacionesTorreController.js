@@ -57,10 +57,10 @@ export const getEstacionesTorreUbicacionController = async (req, res) => {
 
 export const getEstacionesTorreUbicacionControllerPaginacion = async (req, res) => {
 
-const { page, perPage, word } = req.query
+const { page, perPage, searchWord, condition } = req.query
 
   try {
-    const result = await getEstacionesTorreUbicacionPaginacionServices(page, perPage, word)
+    const result = await getEstacionesTorreUbicacionPaginacionServices(page, perPage, searchWord, condition)
     res.status(200).json({ result })
   } catch (error) {
     res.status(500).json({ error: error.message })

@@ -8,9 +8,9 @@ const router = Router()
 router.get('/api/estacionesTorre', checkSession, getEstacionesTorreController)
 router.get('/api/estacionesTorreUbicacion', getEstacionesTorreUbicacionController)
 router.get('/api/estacionesTorreUbicacionPaginacion', getEstacionesTorreUbicacionControllerPaginacion)
-router.post('/api/estacionesTorre', checkSession, createEstacionesTorreController)
+router.post('/api/estacionesTorre', createEstacionesTorreController)
 router.get('/api/estacionesTorre/:id', getEstacionesTorreControllerID)  
 router.put('/api/estacionesTorre/:id', updateEstacionesTorreController)
-router.delete('/api/estacionesTorre/:id', checkSession, deleteEstacionesTorreController)
+router.delete('/api/estacionesTorre/:id', deleteEstacionesTorreController)
 
 export default router

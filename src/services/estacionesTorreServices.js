@@ -72,23 +72,23 @@ export const getEstacionesTorreUbicacionServices = async (ubicacion) => {
 
 }
 
-export const getEstacionesTorreUbicacionPaginacionServices = async (page = 1, perPage = 10, word) => {
+export const getEstacionesTorreUbicacionPaginacionServices = async (page = 1, perPage = 10, searchWord, condition) => {
   const { limit, offset } = getPagination(page, perPage)
 
-  // Construir la cláusula WHERE si hay palabras de búsqueda
-  let whereClause = ''
-  let havingClause = ''
+  // Configurar búsqueda y conditiones
+  const conditions = []
+  let replacements = []
   
-  if (word && word.trim() !== '') {
-    const words = word.trim().split(/\s+/) // Dividir por espacios
-    const conditions = words.map(() => `(
+  if (searchWord && searchWord.trim() !== '') {
+    const searchPattern = `%${searchWord.trim()}%`
+    conditions.push(`(
       CAST(Estaciones_torre.Estaciones_torreID AS CHAR) LIKE ? OR
       Estaciones_torre.Identificacion LIKE ? OR
       Estaciones_torre.Direccion_ip LIKE ? OR
       CAST(Estaciones_torre.AreaID AS CHAR) LIKE ? OR
+      Areas.Area LIKE ? OR
       Edificio.Edificio LIKE ? OR
       Planta.Planta LIKE ? OR
-      Areas.Area LIKE ? OR
       Estaciones_torre.Caja LIKE ? OR
       CAST(Estaciones_torre.SwitchID AS CHAR) LIKE ? OR
       Estaciones_torre.Puerto_Switch LIKE ? OR
@@ -108,10 +108,21 @@ export const getEstacionesTorreUbicacionPaginacionServices = async (page = 1, pe
       Estaciones_torre.Artist_DNxIO_serie LIKE ? OR
       Estaciones_torre.Artist_DNxIO_rtve LIKE ? OR
       Estaciones_torre.Observaciones LIKE ?
-    )`).join(' AND ')
-    
-    whereClause = `WHERE ${conditions}`
+    )`)
+    replacements = Array(26).fill(searchPattern)
   }
+
+  if (condition && condition.trim() !== '') {
+    conditions.push(condition.trim())
+  }
+
+  const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : ''
+
+  // Joins compartidos
+  const joins = `FROM Estaciones_torre
+        LEFT JOIN Areas ON Estaciones_torre.AreaID = Areas.AreaID
+        LEFT JOIN Edificio ON Areas.EdificioID = Edificio.EdificioID
+        LEFT JOIN Planta ON Areas.PlantaID = Planta.PlantaID`
 
   const baseQuery = `SELECT
         Estaciones_torre.Estaciones_torreID,
@@ -140,43 +151,20 @@ export const getEstacionesTorreUbicacionPaginacionServices = async (page = 1, pe
         Estaciones_torre.Artist_DNxIO_rtve,
         Estaciones_torre.Desafectado,
         Estaciones_torre.Observaciones
-        FROM Estaciones_torre
-        LEFT OUTER JOIN Areas ON Estaciones_torre.AreaID = Areas.AreaID
-        LEFT OUTER JOIN Edificio ON Areas.EdificioID = Edificio.EdificioID
-        LEFT OUTER JOIN Planta ON Areas.PlantaID = Planta.PlantaID
+        ${joins}
         ${whereClause}
         ORDER BY Estaciones_torre.Estaciones_torreID
-        LIMIT ${limit} 
-        OFFSET ${offset}`
+        LIMIT ${limit} OFFSET ${offset}`
 
-  const countQuery = `SELECT COUNT(*) as count 
-        FROM Estaciones_torre
-        LEFT OUTER JOIN Areas ON Estaciones_torre.AreaID = Areas.AreaID
-        LEFT OUTER JOIN Edificio ON Areas.EdificioID = Edificio.EdificioID
-        LEFT OUTER JOIN Planta ON Areas.PlantaID = Planta.PlantaID
-        ${whereClause}`
+  const countQuery = `SELECT COUNT(*) as count ${joins} ${whereClause}`
 
-  // Preparar los valores de los parámetros
-  let replacements = []
-  if (word && word.trim() !== '') {
-    const words = word.trim().split(/\s+/)
-    words.forEach(w => {
-      const searchPattern = `%${w}%`
-      // 26 campos por palabra (según la cantidad de campos en la condición)
-      for (let i = 0; i < 26; i++) {
-        replacements.push(searchPattern)
-      }
-    })
-  }
-
-  const [results, metadata] = await sequelize.query(baseQuery, {
+  const [results] = await sequelize.query(baseQuery, {
     replacements: replacements.length > 0 ? replacements : undefined
   })
 
-  const countResult = await sequelize.query(countQuery, {
+  const [[{ count: totalItems }]] = await sequelize.query(countQuery, {
     replacements: replacements.length > 0 ? replacements : undefined
   })
   
-  const totalItems = countResult[0][0].count
   return getPagingData(results, totalItems, page, limit)
 }
