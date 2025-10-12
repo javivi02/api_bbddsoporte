@@ -1,7 +1,8 @@
-
 import {
   getPortatilesPaginationServices,
+  createPortatilService,
   getPortatilesServices,
+  deletePortatilService,
   getPortatilesStockServices,
   getPortatilServices, getUpdateServices, getPortatileDelete
 } from '../services/portatilesServices.js'
@@ -52,16 +53,14 @@ export const getPortatilUpdateController = async (req, res) => {
   res.send(portatil)
 }
 
-export const getPortatilesPaginationController = async (req, res) => {
-  const { page, per_page } = req.query
+export const getPortatilesControllerPaginacion = async (req, res) => {
+  const { page, perPage, searchWord, condition, order } = req.query
 
   try {
-    const portatiles = await getPortatilesPaginationServices(page, per_page)
-    res.send(portatiles)
-  } catch (error) {
-    res.status(500).send({
-      message: error.message || 'Ocurrio un error al intentar obtener los portatiles'
-    })
+    const result = await getPortatilesPaginationServices({ page, perPage, searchWord, condition, order })
+    res.send(result)
+  } catch (e) {
+    res.status(400).send(e.message)
   }
 }
 

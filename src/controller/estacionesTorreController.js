@@ -1,4 +1,4 @@
-import { getEstacionesTorreServices, createEstacionesTorreService, updateEstacionesTorreService, deleteEstacionesTorreService, getEstacionesTorreUbicacionServices, getEstacionesTorreServicesID, getEstacionesTorreUbicacionPaginacionServices } from '../services/estacionesTorreServices.js'
+import { getEstacionesTorreServices, createEstacionesTorreService, updateEstacionesTorreService, deleteEstacionesTorreService, getEstacionesTorreUbicacionServices, getEstacionesTorreServicesID, getEstacionesTorreUbicacionPaginacionServices, getEstacionesTorreServicesCheckDuplicate } from '../services/estacionesTorreServices.js'
 
 export const getEstacionesTorreController = async (req, res) => {
   const estacionesTorre = await getEstacionesTorreServices()
@@ -14,7 +14,6 @@ export const getEstacionesTorreControllerID = async (req, res) => {
   } catch (e) {
     res.status(400).send(e.message)
   }
-
 }
 
 export const createEstacionesTorreController = async (req, res) => {
@@ -56,15 +55,26 @@ export const getEstacionesTorreUbicacionController = async (req, res) => {
 }
 
 export const getEstacionesTorreUbicacionControllerPaginacion = async (req, res) => {
-
-const { page, perPage, searchWord, condition } = req.query
+  const { page, perPage, searchWord, condition, order } = req.query
 
   try {
-    const result = await getEstacionesTorreUbicacionPaginacionServices(page, perPage, searchWord, condition)
-    res.status(200).json({ result })
+    const result = await getEstacionesTorreUbicacionPaginacionServices(page, perPage, searchWord, condition, order)
+    res.status(200).json(result)
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
+}
 
+export const getEstacionesTorreControllerCheckDuplicate = async (req, res) => {
+  const { value, column } = req.query
 
+  try {
+    const result = await getEstacionesTorreServicesCheckDuplicate(value, column)
+    if (result) {
+      return res.status(200).json({ message: 'Registro existente', duplicate: true })
+    }
+    res.status(200).json({ message: 'No se encontró duplicado', duplicate: false })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
 }

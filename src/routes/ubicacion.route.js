@@ -5,9 +5,9 @@ import { checkSession } from '../middleware/session.js'
 
 const router = Router()
 
-router.get('/api/ubicacion', checkSession, getUbicacionController)
-router.post('/api/ubicacion', checkSession, createUbicacionController)
-router.put('/api/ubicacion/:id', checkSession, updateUbicacionController)
-router.delete('/api/ubicacion/:id', checkSession, deleteUbicacionController)
+router.get('/api/ubicacion', getUbicacionController)
+router.post('/api/ubicacion', createUbicacionController)
+router.put('/api/ubicacion/:id', updateUbicacionController)
+router.delete('/api/ubicacion/:id', deleteUbicacionController)
 
 export default router

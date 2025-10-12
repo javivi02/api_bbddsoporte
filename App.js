@@ -73,7 +73,7 @@ app.use(
   switchRoute,
   ubicacion,
   usuarios,
-  auth,
+  auth
 )
 
 // static files

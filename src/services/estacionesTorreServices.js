@@ -2,11 +2,17 @@ import { sequelize } from '../bbdd/dbConnection.js'
 import { modeloEstacionesTorre } from '../bbdd/models/Estaciones_torre.js'
 import { getPagination, getPagingData } from '../utils/pagination.js'
 
-
 const EstacionesTorre = modeloEstacionesTorre(sequelize)
 
 export const getEstacionesTorreServices = async () => {
   return await EstacionesTorre.findAll()
+}
+
+export const getEstacionesTorreServicesCheckDuplicate = async (value, column) => {
+  const whereClause = {}
+  whereClause[column] = value
+
+  return await EstacionesTorre.findOne({ where: whereClause })
 }
 
 export const getEstacionesTorreServicesID = async (id) => {
@@ -33,8 +39,7 @@ export const deleteEstacionesTorreService = async (id) => {
 }
 
 export const getEstacionesTorreUbicacionServices = async (ubicacion) => {
-
-    const [results, metadata] = await sequelize.query(`SELECT
+  const [results, metadata] = await sequelize.query(`SELECT
         Estaciones_torre.Estaciones_torreID,
         Estaciones_torre.Identificacion,
         Estaciones_torre.Direccion_ip,
@@ -68,17 +73,16 @@ export const getEstacionesTorreUbicacionServices = async (ubicacion) => {
         LEFT OUTER JOIN Planta ON Areas.PlantaID = Planta.PlantaID
         ORDER BY Estaciones_torre.Estaciones_torreID`)
 
-    return results
-
+  return results
 }
 
-export const getEstacionesTorreUbicacionPaginacionServices = async (page = 1, perPage = 10, searchWord, condition) => {
+export const getEstacionesTorreUbicacionPaginacionServices = async (page = 1, perPage = 10, searchWord, condition, order = 'Estaciones_torre.Estaciones_torreID') => {
   const { limit, offset } = getPagination(page, perPage)
 
   // Configurar búsqueda y conditiones
   const conditions = []
   let replacements = []
-  
+
   if (searchWord && searchWord.trim() !== '') {
     const searchPattern = `%${searchWord.trim()}%`
     conditions.push(`(
@@ -113,7 +117,7 @@ export const getEstacionesTorreUbicacionPaginacionServices = async (page = 1, pe
   }
 
   if (condition && condition.trim() !== '') {
-    conditions.push(condition.trim())
+    conditions.push(`(${condition.trim()})`)
   }
 
   const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : ''
@@ -153,7 +157,7 @@ export const getEstacionesTorreUbicacionPaginacionServices = async (page = 1, pe
         Estaciones_torre.Observaciones
         ${joins}
         ${whereClause}
-        ORDER BY Estaciones_torre.Estaciones_torreID
+        ORDER BY ${order}
         LIMIT ${limit} OFFSET ${offset}`
 
   const countQuery = `SELECT COUNT(*) as count ${joins} ${whereClause}`
@@ -165,6 +169,6 @@ export const getEstacionesTorreUbicacionPaginacionServices = async (page = 1, pe
   const [[{ count: totalItems }]] = await sequelize.query(countQuery, {
     replacements: replacements.length > 0 ? replacements : undefined
   })
-  
+
   return getPagingData(results, totalItems, page, limit)
 }

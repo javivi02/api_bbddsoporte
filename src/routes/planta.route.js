@@ -5,9 +5,9 @@ import { checkSession } from '../middleware/session.js'
 
 const router = Router()
 
-router.get('/api/planta', checkSession, getPlantaController)
-router.post('/api/planta', checkSession, createPlantaController)
-router.put('/api/planta/:id', checkSession, updatePlantaController)
-router.delete('/api/planta/:id', checkSession, deletePlantaController)
+router.get('/api/planta', getPlantaController)
+router.post('/api/planta', createPlantaController)
+router.put('/api/planta/:id', updatePlantaController)
+router.delete('/api/planta/:id', deletePlantaController)
 
 export default router

@@ -50,15 +50,65 @@ export const getUpdateServices = async (id, data) => {
   })
 }
 
+export const getPortatilesPaginationServices = async ({ page, perPage, searchWord, condition, order = 'PortatilID' }) => {
+  const { limit, offset } = getPagination(page, perPage)
 
-export const getPortatilesPaginationServices = async (page, per_page) => {
-  const { limit, offset } = getPagination(page, per_page)
-  try {
-    const data = await Portatiles.findAndCountAll({ offset, limit })
-    return getPagingData(data, page, limit)
-  } catch (error) {
-    throw new error()
+  // Configurar búsqueda y conditiones
+  const conditions = []
+  let replacements = []
+
+  if (searchWord && searchWord.trim() !== '') {
+    const searchPattern = `%${searchWord.trim()}%`
+    conditions.push(`(
+      CAST(PortatilID AS CHAR) LIKE ? OR
+      Portatil LIKE ? OR
+      Modelo LIKE ? OR
+      Direccion_ip_torre LIKE ? OR
+      Direccion_ip_wireless LIKE ? OR
+      Portatil_serie LIKE ? OR
+      Portatil_rtve LIKE ? OR
+      Observaciones LIKE ?
+    )`)
+    replacements = Array(8).fill(searchPattern)
   }
+
+  if (condition && condition.trim() !== '') {
+    conditions.push(`(${condition.trim()})`)
+  }
+
+  const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : ''
+
+  // Joins compartidos
+  const joins = 'FROM Portatiles'
+
+  const baseQuery = `SELECT
+          PortatilID,
+          Portatil,
+          Modelo,
+          Direccion_ip_torre,
+          Direccion_ip_wireless,
+          Portatil_serie,
+          Portatil_rtve,
+          Observaciones,
+          Pool,
+          Desafectado,
+          Edicion
+          ${joins}
+          ${whereClause}
+          ORDER BY ${order}
+          LIMIT ${limit} OFFSET ${offset}`
+
+  const countQuery = `SELECT COUNT(*) as count ${joins} ${whereClause}`
+
+  const [results] = await sequelize.query(baseQuery, {
+    replacements: replacements.length > 0 ? replacements : undefined
+  })
+
+  const [[{ count: totalItems }]] = await sequelize.query(countQuery, {
+    replacements: replacements.length > 0 ? replacements : undefined
+  })
+
+  return getPagingData(results, totalItems, page, limit)
 }
 
 export const createPortatilService = async (data) => {

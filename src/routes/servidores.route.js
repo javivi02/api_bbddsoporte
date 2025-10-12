@@ -1,13 +1,14 @@
-
 import { Router } from 'express'
-import { getServidoresController, createServidoresController, updateServidoresController, deleteServidoresController } from '../controller/servidoresController.js'
+import { getServidoresController, createServidoresController, updateServidoresController, deleteServidoresController, getServidoresControllerPaginacion, getServidoresControllerCheckDuplicate } from '../controller/servidoresController.js'
 import { checkSession } from '../middleware/session.js'
 
 const router = Router()
 
-router.get('/api/servidores', checkSession, getServidoresController)
-router.post('/api/servidores', checkSession, createServidoresController)
-router.put('/api/servidores/:id', checkSession, updateServidoresController)
-router.delete('/api/servidores/:id', checkSession, deleteServidoresController)
+router.get('/api/servidores', getServidoresController)
+router.get('/api/servidoresPaginacion', getServidoresControllerPaginacion)
+router.get('/api/servidoresCheckDuplicate', getServidoresControllerCheckDuplicate)
+router.post('/api/servidores', createServidoresController)
+router.put('/api/servidores/:id', updateServidoresController)
+router.delete('/api/servidores/:id', deleteServidoresController)
 
 export default router

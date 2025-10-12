@@ -1,4 +1,4 @@
-import { getServidoresServices, createServidoresService, updateServidoresService, deleteServidoresService } from '../services/servidoresServices.js'
+import { getServidoresServices, createServidoresService, updateServidoresService, deleteServidoresService, getServidoresPaginacionServices, getServidoresServicesCheckDuplicate } from '../services/servidoresServices.js'
 
 export const getServidoresController = async (req, res) => {
   const servidores = await getServidoresServices()
@@ -33,6 +33,31 @@ export const deleteServidoresController = async (req, res) => {
     const deleted = await deleteServidoresService(id)
     if (!deleted) return res.status(404).send('No encontrado')
     res.send({ success: true })
+  } catch (e) {
+    res.status(400).send(e.message)
+  }
+}
+
+export const getServidoresControllerPaginacion = async (req, res) => {
+  const { page, perPage, searchWord, condition, order } = req.query
+
+  try {
+    const result = await getServidoresPaginacionServices({ page, perPage, searchWord, condition, order })
+    res.send(result)
+  } catch (e) {
+    res.status(400).send(e.message)
+  }
+}
+
+export const getServidoresControllerCheckDuplicate = async (req, res) => {
+  const { value, column } = req.query
+
+  try {
+    const result = await getServidoresServicesCheckDuplicate(value, column)
+    if (result) {
+      return res.status(200).json({ message: 'Registro existente', duplicate: true })
+    }
+    res.status(200).json({ message: 'No se encontró duplicado', duplicate: false })
   } catch (e) {
     res.status(400).send(e.message)
   }
