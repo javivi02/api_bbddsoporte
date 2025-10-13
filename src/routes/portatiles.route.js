@@ -1,7 +1,12 @@
 import { Router } from 'express'
 import {
   getPortatilController,
-  getPortatilesController, getPortatilesControllerPaginacion, getPortatilUpdateController, createPortatilController, deletePortatilController
+  getPortatilesController,
+  getPortatilesControllerPaginacion,
+  getPortatilUpdateController,
+  createPortatilController,
+  deletePortatilController,
+  getPortatilesStockController
 } from '../controller/portatilesController.js'
 import { checkSession } from '../middleware/session.js'
 
@@ -9,6 +14,7 @@ const router = Router()
 
 router.get('/api/portatiles', getPortatilesController)
 router.get('/api/portatilesPaginacion', getPortatilesControllerPaginacion)
+router.get('/api/portatilesStock', getPortatilesStockController)
 router.get('/api/portatiles/:id', getPortatilController)
 router.post('/api/portatiles', createPortatilController)
 router.put('/api/portatiles/:id', getPortatilUpdateController)

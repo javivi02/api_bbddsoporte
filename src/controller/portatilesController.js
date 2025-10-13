@@ -4,7 +4,9 @@ import {
   getPortatilesServices,
   deletePortatilService,
   getPortatilesStockServices,
-  getPortatilServices, getUpdateServices, getPortatileDelete
+  getPortatilServices,
+  getUpdateServices,
+  getPortatileDelete
 } from '../services/portatilesServices.js'
 export const createPortatilController = async (req, res) => {
   try {
@@ -68,4 +70,9 @@ export const getPortatilDelete = async (req, res) => {
   const { id } = req.params
   const response = await getPortatileDelete(id)
   res.send({ message: response || 'Portatil eliminado correctamente' })
+}
+
+export const getPortatilesStockController = async (req, res) => {
+  const portatiles = await getPortatilesStockServices()
+  res.send(portatiles)
 }
