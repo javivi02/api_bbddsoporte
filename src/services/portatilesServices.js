@@ -53,23 +53,35 @@ export const getUpdateServices = async (id, data) => {
 export const getPortatilesPaginationServices = async ({ page, perPage, searchWord, condition, order = 'PortatilID' }) => {
   const { limit, offset } = getPagination(page, perPage)
 
-  // Configurar búsqueda y conditiones
+  // Configurar búsqueda y condiciones
   const conditions = []
-  let replacements = []
+  const replacements = []
 
   if (searchWord && searchWord.trim() !== '') {
-    const searchPattern = `%${searchWord.trim()}%`
-    conditions.push(`(
-      CAST(PortatilID AS CHAR) LIKE ? OR
-      Portatil LIKE ? OR
-      Modelo LIKE ? OR
-      Direccion_ip_torre LIKE ? OR
-      Direccion_ip_wireless LIKE ? OR
-      Portatil_serie LIKE ? OR
-      Portatil_rtve LIKE ? OR
-      Observaciones LIKE ?
-    )`)
-    replacements = Array(8).fill(searchPattern)
+    // Dividir en palabras individuales y filtrar vacías
+    const words = searchWord.trim().split(/\s+/).filter(word => word.length > 0)
+
+    // Para cada palabra, crear una condición que busque en todos los campos
+    const wordConditions = words.map(word => {
+      const searchPattern = `%${word}%`
+      // Agregar el patrón 8 veces (una por cada campo)
+      replacements.push(...Array(8).fill(searchPattern))
+
+      return `(
+        CAST(PortatilID AS CHAR) LIKE ? OR
+        Portatil LIKE ? OR
+        Modelo LIKE ? OR
+        Direccion_ip_torre LIKE ? OR
+        Direccion_ip_wireless LIKE ? OR
+        Portatil_serie LIKE ? OR
+        Portatil_rtve LIKE ? OR
+        Observaciones LIKE ?
+      )`
+    })
+
+    // Unir todas las condiciones de palabras con AND
+    // Esto asegura que TODAS las palabras deben aparecer (en cualquier campo)
+    conditions.push(wordConditions.join(' AND '))
   }
 
   if (condition && condition.trim() !== '') {
@@ -82,21 +94,21 @@ export const getPortatilesPaginationServices = async ({ page, perPage, searchWor
   const joins = 'FROM Portatiles'
 
   const baseQuery = `SELECT
-          PortatilID,
-          Portatil,
-          Modelo,
-          Direccion_ip_torre,
-          Direccion_ip_wireless,
-          Portatil_serie,
-          Portatil_rtve,
-          Observaciones,
-          Pool,
-          Desafectado,
-          Edicion
-          ${joins}
-          ${whereClause}
-          ORDER BY ${order}
-          LIMIT ${limit} OFFSET ${offset}`
+    PortatilID,
+    Portatil,
+    Modelo,
+    Direccion_ip_torre,
+    Direccion_ip_wireless,
+    Portatil_serie,
+    Portatil_rtve,
+    Observaciones,
+    Pool,
+    Desafectado,
+    Edicion
+  ${joins}
+  ${whereClause}
+    ORDER BY ${order}
+    LIMIT ${limit} OFFSET ${offset}`
 
   const countQuery = `SELECT COUNT(*) as count ${joins} ${whereClause}`
 

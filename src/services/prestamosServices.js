@@ -21,8 +21,7 @@ export const getPrestamosServices = async () => {
   Prestamos.Raton, 
   Prestamos.Usuario, 
   Prestamos.Observaciones, 
-  Portatiles.Portatil, 
-  Miembros_departamento.Nombre, 
+  Portatiles.Portatil,
   Areas.Area, 
   Prestamos.Devolucion_prevista, 
   Prestamos.Control_devolucion 
@@ -38,16 +37,23 @@ export const getPrestamosServices = async () => {
 
 export const getPrestamosPaginationServices = async (page, perPage, searchWord, condition, order = 'Prestamos.Fecha_entrega DESC') => {
   const { limit, offset } = getPagination(page, perPage)
-
   console.log(page, perPage, searchWord, condition, order)
 
-  // Configurar búsqueda y conditiones
+  // Configurar búsqueda y condiciones
   const conditions = []
-  let replacements = []
+  const replacements = []
 
   if (searchWord && searchWord.trim() !== '') {
-    const searchPattern = `%${searchWord.trim()}%`
-    conditions.push(`(
+    // Dividir en palabras individuales y filtrar vacías
+    const words = searchWord.trim().split(/\s+/).filter(word => word.length > 0)
+
+    // Para cada palabra, crear una condición que busque en todos los campos
+    const wordConditions = words.map(word => {
+      const searchPattern = `%${word}%`
+      // Agregar el patrón 14 veces (una por cada campo)
+      replacements.push(...Array(14).fill(searchPattern))
+
+      return `(
         CAST(Prestamos.PrestamosID AS CHAR) LIKE ? OR
         CAST(Prestamos.PortatilID AS CHAR) LIKE ? OR
         Prestamos.Fecha_entrega LIKE ? OR
@@ -62,8 +68,12 @@ export const getPrestamosPaginationServices = async (page, perPage, searchWord, 
         Prestamos.Motivo LIKE ? OR
         Prestamos.Observaciones LIKE ? OR
         Portatiles.Portatil LIKE ?
-      )`)
-    replacements = Array(14).fill(searchPattern)
+      )`
+    })
+
+    // Unir todas las condiciones de palabras con AND
+    // Esto asegura que TODAS las palabras deben aparecer (en cualquier campo)
+    conditions.push(wordConditions.join(' AND '))
   }
 
   if (condition && condition.trim() !== '') {
@@ -74,36 +84,33 @@ export const getPrestamosPaginationServices = async (page, perPage, searchWord, 
 
   // Joins compartidos
   const joins = `FROM Prestamos
-        INNER JOIN Portatiles ON Prestamos.PortatilID = Portatiles.PortatilID
-        LEFT OUTER JOIN Usuarios ON Prestamos.Usuario = Usuarios.Usuario
-        LEFT OUTER JOIN Miembros_departamento ON Usuarios.Matricula_rtve = Miembros_departamento.Matricula_rtve
-        LEFT OUTER JOIN Areas ON Prestamos.AreaID = Areas.AreaID`
+    INNER JOIN Portatiles ON Prestamos.PortatilID = Portatiles.PortatilID
+    LEFT OUTER JOIN Usuarios ON Prestamos.Usuario = Usuarios.Usuario
+    LEFT OUTER JOIN Miembros_departamento ON Usuarios.Matricula_rtve = Miembros_departamento.Matricula_rtve
+    LEFT OUTER JOIN Areas ON Prestamos.AreaID = Areas.AreaID`
 
   const baseQuery = `SELECT
-            Prestamos.PrestamosID, 
-            Prestamos.PortatilID, 
-            Prestamos.Fecha_entrega, 
-            Prestamos.Devolucion_prevista, 
-            Prestamos.Fecha_devolucion, 
-            Prestamos.Entregado_a, 
-            Prestamos.Telefono, 
-            Prestamos.Email, 
-            Prestamos.AreaID, 
-            Prestamos.Motivo,
-            Prestamos.Umts, 
-            Prestamos.Alimentacion, 
-            Prestamos.Cable_red, 
-            Prestamos.Raton, 
-            Prestamos.Usuario, 
-            Portatiles.Portatil, 
-            Miembros_departamento.Nombre, 
-            Areas.Area, 
-            Prestamos.Control_devolucion, 
-            Prestamos.Observaciones
-            ${joins}
-            ${whereClause}
-            ORDER BY ${order}
-            LIMIT ${limit} OFFSET ${offset}`
+    Prestamos.PrestamosID,
+    Prestamos.PortatilID,
+    Prestamos.Fecha_entrega,
+    Prestamos.Devolucion_prevista,
+    Prestamos.Fecha_devolucion,
+    Prestamos.Entregado_a,
+    Prestamos.Telefono,
+    Prestamos.Email,
+    Prestamos.AreaID,
+    Prestamos.Motivo,
+    Prestamos.Umts,
+    Prestamos.Alimentacion,
+    Prestamos.Cable_red,
+    Prestamos.Raton,
+    Prestamos.Usuario,
+    Prestamos.Control_devolucion,
+    Prestamos.Observaciones
+  ${joins}
+  ${whereClause}
+    ORDER BY ${order}
+    LIMIT ${limit} OFFSET ${offset}`
 
   const countQuery = `SELECT COUNT(*) as count ${joins} ${whereClause}`
 

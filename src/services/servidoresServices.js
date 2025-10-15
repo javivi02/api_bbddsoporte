@@ -36,33 +36,45 @@ export const deleteServidoresService = async (id) => {
 export const getServidoresPaginacionServices = async ({ page, perPage, searchWord, condition, order = 'ServidoresID' }) => {
   const { limit, offset } = getPagination(page, perPage)
 
-  // Configurar búsqueda y conditiones
+  // Configurar búsqueda y condiciones
   const conditions = []
-  let replacements = []
+  const replacements = []
 
   if (searchWord && searchWord.trim() !== '') {
-    const searchPattern = `%${searchWord.trim()}%`
-    conditions.push(`(
-      CAST(ServidoresID AS CHAR) LIKE ? OR
-      Identificacion LIKE ? OR
-      Direccion_ip LIKE ? OR
-      Direccion_ip2 LIKE ? OR
-      Tipo LIKE ? OR
-      Modelo LIKE ? OR
-      Numero_serie LIKE ? OR
-      Etiqueta_rtve LIKE ? OR
-      Garantia LIKE ? OR
-      CAST(EdificioID AS CHAR) LIKE ? OR
-      CAST(PlantaID AS CHAR) LIKE ? OR
-      CAST(Sala_maquinasID AS CHAR) LIKE ? OR
-      CAST(UbicacionID AS CHAR) LIKE ? OR
-      Dongle LIKE ? OR
-      Sysid LIKE ? OR
-      CAST(SwitchID AS CHAR) LIKE ? OR
-      Puerto_Switch LIKE ? OR
-      Observaciones LIKE ?
-    )`)
-    replacements = Array(18).fill(searchPattern)
+    // Dividir en palabras individuales y filtrar vacías
+    const words = searchWord.trim().split(/\s+/).filter(word => word.length > 0)
+
+    // Para cada palabra, crear una condición que busque en todos los campos
+    const wordConditions = words.map(word => {
+      const searchPattern = `%${word}%`
+      // Agregar el patrón 18 veces (una por cada campo)
+      replacements.push(...Array(18).fill(searchPattern))
+
+      return `(
+        CAST(ServidoresID AS CHAR) LIKE ? OR
+        Identificacion LIKE ? OR
+        Direccion_ip LIKE ? OR
+        Direccion_ip2 LIKE ? OR
+        Tipo LIKE ? OR
+        Modelo LIKE ? OR
+        Numero_serie LIKE ? OR
+        Etiqueta_rtve LIKE ? OR
+        Garantia LIKE ? OR
+        CAST(EdificioID AS CHAR) LIKE ? OR
+        CAST(PlantaID AS CHAR) LIKE ? OR
+        CAST(Sala_maquinasID AS CHAR) LIKE ? OR
+        CAST(UbicacionID AS CHAR) LIKE ? OR
+        Dongle LIKE ? OR
+        Sysid LIKE ? OR
+        CAST(SwitchID AS CHAR) LIKE ? OR
+        Puerto_Switch LIKE ? OR
+        Observaciones LIKE ?
+      )`
+    })
+
+    // Unir todas las condiciones de palabras con AND
+    // Esto asegura que TODAS las palabras deben aparecer (en cualquier campo)
+    conditions.push(wordConditions.join(' AND '))
   }
 
   if (condition && condition.trim() !== '') {
@@ -75,29 +87,29 @@ export const getServidoresPaginacionServices = async ({ page, perPage, searchWor
   const joins = 'FROM Servidores'
 
   const baseQuery = `SELECT
-          ServidoresID,
-          Identificacion,
-          Direccion_ip,
-          Direccion_ip2,
-          Tipo,
-          Modelo,
-          Numero_serie,
-          Etiqueta_rtve,
-          Garantia,
-          EdificioID,
-          PlantaID,
-          Sala_maquinasID,
-          UbicacionID,
-          Dongle,
-          Sysid,
-          SwitchID,
-          Puerto_Switch,
-          Observaciones,
-          Desafectado
-          ${joins}
-          ${whereClause}
-          ORDER BY ${order}
-          LIMIT ${limit} OFFSET ${offset}`
+    ServidoresID,
+    Identificacion,
+    Direccion_ip,
+    Direccion_ip2,
+    Tipo,
+    Modelo,
+    Numero_serie,
+    Etiqueta_rtve,
+    Garantia,
+    EdificioID,
+    PlantaID,
+    Sala_maquinasID,
+    UbicacionID,
+    Dongle,
+    Sysid,
+    SwitchID,
+    Puerto_Switch,
+    Observaciones,
+    Desafectado
+  ${joins}
+  ${whereClause}
+    ORDER BY ${order}
+    LIMIT ${limit} OFFSET ${offset}`
 
   const countQuery = `SELECT COUNT(*) as count ${joins} ${whereClause}`
 
