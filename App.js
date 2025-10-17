@@ -22,6 +22,7 @@ import mesasSonido from './src/routes/mesasSonido.route.js'
 import planta from './src/routes/planta.route.js'
 import equipamiento from './src/routes/equipamiento.route.js'
 import prestamos from './src/routes/prestamos.route.js'
+import prestamosTipo from './src/routes/prestamosTipo.route.js'
 import salaMaquinas from './src/routes/salaMaquinas.route.js'
 import servidores from './src/routes/servidores.route.js'
 import servidoresCctt from './src/routes/servidoresCctt.route.js'
@@ -65,6 +66,7 @@ app.use(
   planta,
   equipamiento,
   prestamos,
+  prestamosTipo,
   salaMaquinas,
   servidores,
   servidoresCctt,
