@@ -59,18 +59,18 @@ export const getEquipamientoPaginationServices = async ({ page, perPage, searchW
     // Para cada palabra, crear una condición que busque en todos los campos
     const wordConditions = words.map(word => {
       const searchPattern = `%${word}%`
-      // Agregar el patrón 8 veces (una por cada campo)
-      replacements.push(...Array(8).fill(searchPattern))
+      replacements.push(...Array(9).fill(searchPattern))
 
       return `(
-        CAST(EquipamientoID AS CHAR) LIKE ? OR
-        Equipamiento LIKE ? OR
+        Equipamiento_tipo.nombre LIKE ? OR
+        Equipamiento.Nombre LIKE ? OR
         Modelo LIKE ? OR
-        Direccion_ip_torre LIKE ? OR
-        Direccion_ip_wireless LIKE ? OR
-        Equipamiento_serie LIKE ? OR
-        Equipamiento_rtve LIKE ? OR
-        Observaciones LIKE ?
+        Numero_serie LIKE ? OR
+        Numero_rtve LIKE ? OR
+        Observaciones LIKE ? OR
+        Modelo LIKE ? OR
+        Desafectado LIKE ? OR
+        Pool LIKE ?
       )`
     })
 
@@ -86,20 +86,20 @@ export const getEquipamientoPaginationServices = async ({ page, perPage, searchW
   const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : ''
 
   // Joins compartidos
-  const joins = 'FROM Portatiles'
+  const joins = `FROM Equipamiento
+    INNER JOIN Equipamiento_tipo ON Equipamiento.Equipamiento_tipoID = Equipamiento_tipo.Equipamiento_tipoID`
 
   const baseQuery = `SELECT
-    PortatilID,
-    Portatil,
+    EquipamientoID,
+    Equipamiento_tipo.nombre as Tipo,
+    Equipamiento.Nombre,
     Modelo,
-    Direccion_ip_torre,
-    Direccion_ip_wireless,
-    Portatil_serie,
-    Portatil_rtve,
+    Numero_serie,
+    Numero_rtve,
     Observaciones,
-    Pool,
+    Modelo,
     Desafectado,
-    Edicion
+    Pool
   ${joins}
   ${whereClause}
     ORDER BY ${order}

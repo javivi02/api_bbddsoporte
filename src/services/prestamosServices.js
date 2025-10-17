@@ -5,7 +5,8 @@ import { getPagination, getPagingData } from '../utils/pagination.js'
 const Prestamos = modeloPrestamos(sequelize)
 
 export const getPrestamosServices = async () => {
-  const [results, metadata] = await sequelize.query(`SELECT PrestamosID,
+  const [results, metadata] = await sequelize.query(`
+    SELECT PrestamosID,
        Prestamo_tipo.Nombre,
        Equipamiento.Nombre,
        Fecha_entrega,
@@ -14,14 +15,18 @@ export const getPrestamosServices = async () => {
        Entregado_a,
        Telefono,
        Email,
-       AreaID,
+       Areas.Area,
        Motivo,
        Prestamos.Observaciones,
-       Usuario_soporte
-      FROM Prestamos
-      INNER JOIN Prestamo_tipo ON Prestamos.Prestamo_tipoID = Prestamo_tipo.Prestamo_tipoID
-      INNER JOIN Equipamiento ON Prestamos.EquipamientoID = Equipamiento.EquipamientoID
-      ORDER BY PrestamosID DESC`)
+       Usuario_soporte,
+       Usuarios.Nombre AS Soporte_nombre,
+       Usuarios.Apellidos AS Soporte_apellidos
+    FROM Prestamos
+    INNER JOIN Prestamo_tipo ON Prestamos.Prestamo_tipoID = Prestamo_tipo.Prestamo_tipoID
+    INNER JOIN Equipamiento ON Prestamos.EquipamientoID = Equipamiento.EquipamientoID
+    INNER JOIN Areas ON Prestamos.AreaID = Areas.AreaID
+    LEFT OUTER JOIN Usuarios ON Prestamos.Usuario_soporte = Usuarios.Usuario
+    ORDER BY PrestamosID DESC`)
 
   return results
 }
@@ -45,20 +50,20 @@ export const getPrestamosPaginationServices = async (page, perPage, searchWord, 
       replacements.push(...Array(14).fill(searchPattern))
 
       return `(
-        CAST(Prestamos.PrestamosID AS CHAR) LIKE ? OR
-        CAST(Prestamos.PortatilID AS CHAR) LIKE ? OR
-        Prestamos.Fecha_entrega LIKE ? OR
-        Prestamos.Devolucion_prevista LIKE ? OR
-        Prestamos.Fecha_devolucion LIKE ? OR
-        Prestamos.Entregado_a LIKE ? OR
-        Prestamos.Telefono LIKE ? OR
-        Prestamos.Email LIKE ? OR
-        Prestamos.Usuario LIKE ? OR
-        Miembros_departamento.Nombre LIKE ? OR
+        Prestamo_tipo.Nombre LIKE ? OR
+        Equipamiento.Nombre LIKE ? OR
+        Fecha_entrega LIKE ? OR
+        Devolucion_prevista LIKE ? OR
+        Fecha_devolucion LIKE ? OR
+        Entregado_a LIKE ? OR
+        Telefono LIKE ? OR
+        Email LIKE ? OR
         Areas.Area LIKE ? OR
-        Prestamos.Motivo LIKE ? OR
+        Motivo LIKE ? OR
         Prestamos.Observaciones LIKE ? OR
-        Portatiles.Portatil LIKE ?
+        Usuario_soporte LIKE ? OR
+        Usuarios.Nombre LIKE ? OR
+        Usuarios.Apellidos LIKE ?
       )`
     })
 
@@ -75,29 +80,26 @@ export const getPrestamosPaginationServices = async (page, perPage, searchWord, 
 
   // Joins compartidos
   const joins = `FROM Prestamos
-    INNER JOIN Portatiles ON Prestamos.PortatilID = Portatiles.PortatilID
-    LEFT OUTER JOIN Usuarios ON Prestamos.Usuario = Usuarios.Usuario
-    LEFT OUTER JOIN Miembros_departamento ON Usuarios.Matricula_rtve = Miembros_departamento.Matricula_rtve
-    LEFT OUTER JOIN Areas ON Prestamos.AreaID = Areas.AreaID`
+    INNER JOIN Prestamo_tipo ON Prestamos.Prestamo_tipoID = Prestamo_tipo.Prestamo_tipoID
+    INNER JOIN Equipamiento ON Prestamos.EquipamientoID = Equipamiento.EquipamientoID
+    INNER JOIN Areas ON Prestamos.AreaID = Areas.AreaID
+    LEFT OUTER JOIN Usuarios ON Prestamos.Usuario_soporte = Usuarios.Usuario`
 
   const baseQuery = `SELECT
-    Prestamos.PrestamosID,
-    Prestamos.PortatilID,
-    Prestamos.Fecha_entrega,
-    Prestamos.Devolucion_prevista,
-    Prestamos.Fecha_devolucion,
-    Prestamos.Entregado_a,
-    Prestamos.Telefono,
-    Prestamos.Email,
-    Prestamos.AreaID,
-    Prestamos.Motivo,
-    Prestamos.Umts,
-    Prestamos.Alimentacion,
-    Prestamos.Cable_red,
-    Prestamos.Raton,
-    Prestamos.Usuario,
-    Prestamos.Control_devolucion,
-    Prestamos.Observaciones
+    Prestamo_tipo.Nombre,
+    Equipamiento.Nombre,
+    Fecha_entrega,
+    Devolucion_prevista,
+    Fecha_devolucion,
+    Entregado_a,
+    Telefono,
+    Email,
+    Areas.Area,
+    Motivo,
+    Prestamos.Observaciones,
+    Usuario_soporte,
+    Usuarios.Nombre AS Soporte_nombre,
+    Usuarios.Apellidos AS Soporte_apellidos
   ${joins}
   ${whereClause}
     ORDER BY ${order}
