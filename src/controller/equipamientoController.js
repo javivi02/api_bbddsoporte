@@ -1,12 +1,18 @@
 import {
   getEquipamientoPaginationServices,
   createEquipamientoService,
-  getEquipamientosServices,
   deleteEquipamientoService,
   getEquipamientosStockServices,
   getEquipamientoServices,
-  getEquipamientoUpdateServices
+  getEquipamientoUpdateServices,
+  getEquipamientosServices
 } from '../services/equipamientoServices.js'
+
+export const getEquipamientosController = async (req, res) => {
+  const equipamientos = await getEquipamientosServices()
+  res.send(equipamientos)
+}
+
 export const createEquipamientoController = async (req, res) => {
   try {
     const data = req.body
@@ -26,18 +32,6 @@ export const deleteEquipamientoController = async (req, res) => {
   } catch (e) {
     res.status(400).send(e.message)
   }
-}
-
-export const getEquipamientosController = async (req, res) => {
-  const { stock } = req.query
-
-  if (stock) {
-    const equipamientos = await getEquipamientosStockServices()
-    return res.send(equipamientos)
-  }
-
-  const equipamientos = await getEquipamientosServices()
-  res.send(equipamientos)
 }
 
 export const getEquipamientoController = async (req, res) => {

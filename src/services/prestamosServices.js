@@ -5,32 +5,23 @@ import { getPagination, getPagingData } from '../utils/pagination.js'
 const Prestamos = modeloPrestamos(sequelize)
 
 export const getPrestamosServices = async () => {
-  const [results, metadata] = await sequelize.query(`SELECT 
-  Prestamos.PrestamosID, 
-  Prestamos.PortatilID, 
-  Prestamos.Fecha_entrega, 
-  Prestamos.Fecha_devolucion, 
-  Prestamos.Entregado_a, 
-  Prestamos.Telefono, 
-  Prestamos.Email, 
-  Prestamos.AreaID, 
-  Prestamos.Motivo,
-  Prestamos.Umts, 
-  Prestamos.Alimentacion, 
-  Prestamos.Cable_red, 
-  Prestamos.Raton, 
-  Prestamos.Usuario, 
-  Prestamos.Observaciones, 
-  Portatiles.Portatil,
-  Areas.Area, 
-  Prestamos.Devolucion_prevista, 
-  Prestamos.Control_devolucion 
-  FROM Prestamos 
-  INNER JOIN Portatiles ON Prestamos.PortatilID = Portatiles.PortatilID 
-  LEFT OUTER JOIN Usuarios ON Prestamos.Usuario = Usuarios.Usuario 
-  LEFT OUTER JOIN Miembros_departamento ON Usuarios.Matricula_rtve = Miembros_departamento.Matricula_rtve 
-  LEFT OUTER JOIN Areas ON Prestamos.AreaID = Areas.AreaID 
-  ORDER BY Prestamos.PrestamosID DESC`)
+  const [results, metadata] = await sequelize.query(`SELECT PrestamosID,
+       Prestamo_tipo.Nombre,
+       Equipamiento.Nombre,
+       Fecha_entrega,
+       Devolucion_prevista,
+       Fecha_devolucion,
+       Entregado_a,
+       Telefono,
+       Email,
+       AreaID,
+       Motivo,
+       Prestamos.Observaciones,
+       Usuario_soporte
+      FROM Prestamos
+      INNER JOIN Prestamo_tipo ON Prestamos.Prestamo_tipoID = Prestamo_tipo.Prestamo_tipoID
+      INNER JOIN Equipamiento ON Prestamos.EquipamientoID = Equipamiento.EquipamientoID
+      ORDER BY PrestamosID DESC`)
 
   return results
 }

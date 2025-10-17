@@ -1,7 +1,6 @@
 import { sequelize } from '../bbdd/dbConnection.js'
 import { modeloDesafectados } from '../bbdd/models/Desafectados.js'
 
-
 const Desafectados = modeloDesafectados(sequelize)
 
 export const getDesafectadosServices = async () => {

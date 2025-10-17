@@ -9,16 +9,23 @@ export const getEquipamientosServices = async () => {
 }
 
 export const getEquipamientosStockServices = async () => {
-  const [results, metadata] = await sequelize.query('SELECT\n' +
-    'EquipamientoID,\n' +
-    'Equipamiento,\n' +
-    'Pool,\n' +
-    'Observaciones,\n' +
-    'Modelo\n' +
-    'FROM Equipamiento\n' +
-    'WHERE (EquipamientoID NOT IN (SELECT EquipamientoID FROM Prestamos WHERE fecha_devolucion IS null AND EquipamientoID IS NOT null)) AND (Pool =1) AND (Desafectado=0)\n' +
-    'ORDER BY EquipamientoID ASC')
+  const [results, metadata] = await sequelize.query(`SELECT
+    EquipamientoID,
+    Equipamiento_tipo.nombre as Tipo,
+    Equipamiento.Nombre,
+    Modelo,
+    Numero_serie,
+    Numero_rtve,
+    Observaciones,
+    Modelo,
+    Desafectado,
+    Pool
+    FROM Equipamiento
+    INNER JOIN Equipamiento_tipo ON Equipamiento.Equipamiento_tipoID = Equipamiento_tipo.Equipamiento_tipoID
+    WHERE (EquipamientoID NOT IN (SELECT EquipamientoID FROM Prestamos WHERE fecha_devolucion IS null AND EquipamientoID IS NOT null)) AND (Pool =1) AND (Desafectado=0)
+    ORDER BY EquipamientoID ASC;`)
 
+  console.log(metadata)
   return results
 }
 

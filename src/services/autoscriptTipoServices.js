@@ -3,7 +3,6 @@ import { modeloAutoscriptTipo } from '../bbdd/models/Autoscript_tipo.js'
 
 const AutoscriptTipo = modeloAutoscriptTipo(sequelize)
 
-
 export const getAutoscriptTipoServices = async () => {
   return await AutoscriptTipo.findAll()
 }
