@@ -1,4 +1,4 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes } from 'sequelize'
 
 export const modeloAutoscriptTipo = (sequelize) => {
   return sequelize.define('Autoscript_tipo', {
@@ -18,13 +18,13 @@ export const modeloAutoscriptTipo = (sequelize) => {
     timestamps: false,
     indexes: [
       {
-        name: "PRIMARY",
+        name: 'PRIMARY',
         unique: true,
-        using: "BTREE",
+        using: 'BTREE',
         fields: [
-          { name: "AutoscriptTipoID" },
+          { name: 'AutoscriptTipoID' }
         ]
-      },
+      }
     ]
-  });
-};
+  })
+}

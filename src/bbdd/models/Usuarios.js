@@ -1,4 +1,4 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes } from 'sequelize'
 
 export const modeloUsuarios = (sequelize) => {
   return sequelize.define('Usuarios', {
@@ -12,12 +12,40 @@ export const modeloUsuarios = (sequelize) => {
       type: DataTypes.STRING(50),
       allowNull: true
     },
-    Contrasena: {
+    Password: {
       type: DataTypes.STRING(60),
+      allowNull: true
+    },
+    Nombre: {
+      type: DataTypes.STRING(40),
+      allowNull: true
+    },
+    Apellidos: {
+      type: DataTypes.STRING(80),
+      allowNull: true
+    },
+    DNI: {
+      type: DataTypes.STRING(12),
       allowNull: true
     },
     Matricula_rtve: {
       type: DataTypes.STRING(8),
+      allowNull: true
+    },
+    Telefono_movil: {
+      type: DataTypes.STRING(20),
+      allowNull: true
+    },
+    Telefono_rtve: {
+      type: DataTypes.STRING(20),
+      allowNull: true
+    },
+    Telefono_rtve_corto: {
+      type: DataTypes.STRING(20),
+      allowNull: true
+    },
+    Grupos_usariosID: {
+      type: DataTypes.INTEGER,
       allowNull: true
     }
   }, {
@@ -26,13 +54,13 @@ export const modeloUsuarios = (sequelize) => {
     timestamps: false,
     indexes: [
       {
-        name: "PRIMARY",
+        name: 'PRIMARY',
         unique: true,
-        using: "BTREE",
+        using: 'BTREE',
         fields: [
-          { name: "UsuariosID" },
+          { name: 'UsuariosID' }
         ]
-      },
+      }
     ]
-  });
-};
+  })
+}

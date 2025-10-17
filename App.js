@@ -6,7 +6,7 @@ import { dirname, join } from 'path'
 import { PORT } from './src/config.js'
 import { sequelize } from './src/bbdd/dbConnection.js'
 
-import abobe from './src/routes/abobe.route.js'
+import adobe from './src/routes/adobe.route.js'
 import agenda from './src/routes/agenda.route.js'
 import almacen from './src/routes/almacen.route.js'
 import areas from './src/routes/areas.route.js'
@@ -19,9 +19,8 @@ import desafectados from './src/routes/desafectados.route.js'
 import edificio from './src/routes/edificio.route.js'
 import estacionesTorre from './src/routes/estacionesTorre.route.js'
 import mesasSonido from './src/routes/mesasSonido.route.js'
-import miembrosDepartamento from './src/routes/miembrosDepartamento.route.js'
 import planta from './src/routes/planta.route.js'
-import portatiles from './src/routes/portatiles.route.js'
+import equipamiento from './src/routes/equipamiento.route.js'
 import prestamos from './src/routes/prestamos.route.js'
 import salaMaquinas from './src/routes/salaMaquinas.route.js'
 import servidores from './src/routes/servidores.route.js'
@@ -51,7 +50,7 @@ try {
 }
 
 app.use(
-  abobe,
+  adobe,
   agenda,
   almacen,
   areas,
@@ -63,9 +62,8 @@ app.use(
   edificio,
   estacionesTorre,
   mesasSonido,
-  miembrosDepartamento,
   planta,
-  portatiles,
+  equipamiento,
   prestamos,
   salaMaquinas,
   servidores,

@@ -1,7 +1,6 @@
 import { sequelize } from '../bbdd/dbConnection.js'
 import { modeloImpresoras } from '../bbdd/models/Impresoras.js'
 
-
 const Impresoras = modeloImpresoras(sequelize)
 
 export const getImpresorasServices = async () => {

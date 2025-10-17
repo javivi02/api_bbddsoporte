@@ -1,28 +1,20 @@
 import { DataTypes } from 'sequelize'
 
-export const modeloAreas = (sequelize) => {
-  return sequelize.define('Areas', {
-    AreaID: {
+export const modeloEquipamientoTipo = (sequelize) => {
+  return sequelize.define('Equipamiento_tipo', {
+    Equipamiento_tipoID: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    Area: {
-      type: DataTypes.STRING(35),
-      allowNull: true
-    },
-    EdificioID: {
-      type: DataTypes.STRING(4),
-      allowNull: true
-    },
-    PlantaID: {
-      type: DataTypes.STRING(4),
+    Nombre: {
+      type: DataTypes.STRING(30),
       allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'Areas',
+    tableName: 'Equipamiento_tipo',
     timestamps: false,
     indexes: [
       {
@@ -30,7 +22,7 @@ export const modeloAreas = (sequelize) => {
         unique: true,
         using: 'BTREE',
         fields: [
-          { name: 'AreaID' }
+          { name: 'Equipamiento_tipoID' }
         ]
       }
     ]

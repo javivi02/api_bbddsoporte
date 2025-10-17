@@ -1,4 +1,4 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes } from 'sequelize'
 
 export const modeloPrestamos = (sequelize) => {
   return sequelize.define('Prestamos', {
@@ -8,7 +8,11 @@ export const modeloPrestamos = (sequelize) => {
       allowNull: false,
       primaryKey: true
     },
-    PortatilID: {
+    Prestamo_tipoID: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    EquipamientoID: {
       type: DataTypes.INTEGER,
       allowNull: true
     },
@@ -22,10 +26,6 @@ export const modeloPrestamos = (sequelize) => {
     },
     Fecha_devolucion: {
       type: DataTypes.DATE,
-      allowNull: true
-    },
-    Control_devolucion: {
-      type: DataTypes.BOOLEAN,
       allowNull: true
     },
     Entregado_a: {
@@ -48,29 +48,18 @@ export const modeloPrestamos = (sequelize) => {
       type: DataTypes.STRING(40),
       allowNull: true
     },
-    Umts: {
-      type: DataTypes.STRING(10),
-      allowNull: true
-    },
-    Alimentacion: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true
-    },
-    Cable_red: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true
-    },
-    Raton: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true
-    },
-    Usuario: {
+    Usuario_soporte: {
       type: DataTypes.STRING(15),
       allowNull: true
     },
     Observaciones: {
       type: DataTypes.TEXT,
       allowNull: true
+    },
+    Control_devolucion: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: 0
     }
   }, {
     sequelize,
@@ -78,13 +67,13 @@ export const modeloPrestamos = (sequelize) => {
     timestamps: false,
     indexes: [
       {
-        name: "PRIMARY",
+        name: 'PRIMARY',
         unique: true,
-        using: "BTREE",
+        using: 'BTREE',
         fields: [
-          { name: "PrestamosID" },
+          { name: 'PrestamosID' }
         ]
-      },
+      }
     ]
-  });
-};
+  })
+}

@@ -1,4 +1,4 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes } from 'sequelize'
 
 export const modeloEstacionesTorre = (sequelize) => {
   return sequelize.define('Estaciones_torre', {
@@ -107,27 +107,27 @@ export const modeloEstacionesTorre = (sequelize) => {
     timestamps: false,
     indexes: [
       {
-        name: "PRIMARY",
+        name: 'PRIMARY',
         unique: true,
-        using: "BTREE",
+        using: 'BTREE',
         fields: [
-          { name: "Estaciones_torreID" },
+          { name: 'Estaciones_torreID' }
         ]
       },
       {
-        name: "direccion_ip",
-        using: "BTREE",
+        name: 'direccion_ip',
+        using: 'BTREE',
         fields: [
-          { name: "Direccion_ip" },
+          { name: 'Direccion_ip' }
         ]
       },
       {
-        name: "identificacion",
-        using: "BTREE",
+        name: 'identificacion',
+        using: 'BTREE',
         fields: [
-          { name: "Identificacion" },
+          { name: 'Identificacion' }
         ]
-      },
+      }
     ]
-  });
-};
+  })
+}

@@ -1,7 +1,7 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes } from 'sequelize'
 
-export const modeloAbobe = (sequelize) => {
-  return sequelize.define('Abobe', {
+export const modeloAdobe = (sequelize) => {
+  return sequelize.define('Adobe', {
     AdobeID: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -71,13 +71,13 @@ export const modeloAbobe = (sequelize) => {
     timestamps: false,
     indexes: [
       {
-        name: "PRIMARY",
+        name: 'PRIMARY',
         unique: true,
-        using: "BTREE",
+        using: 'BTREE',
         fields: [
-          { name: "AdobeID" },
+          { name: 'AdobeID' }
         ]
-      },
+      }
     ]
-  });
-};
+  })
+}

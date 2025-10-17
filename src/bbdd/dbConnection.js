@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize'
-export const sequelize = new Sequelize('bbdd_soporte', 'root', 'root', {
+export const sequelize = new Sequelize('bbdd_soporte_2025', 'root', 'root', {
   host: '192.28.1.2',
-  port: 3308,
+  port: 3310,
   dialect: 'mysql'/* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */
 })

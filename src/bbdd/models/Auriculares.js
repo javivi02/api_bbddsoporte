@@ -1,4 +1,4 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes } from 'sequelize'
 
 export const modeloAuriculares = (sequelize) => {
   return sequelize.define('Auriculares', {
@@ -18,13 +18,13 @@ export const modeloAuriculares = (sequelize) => {
     timestamps: false,
     indexes: [
       {
-        name: "PRIMARY",
+        name: 'PRIMARY',
         unique: true,
-        using: "BTREE",
+        using: 'BTREE',
         fields: [
-          { name: "AuricularesID" },
+          { name: 'AuricularesID' }
         ]
-      },
+      }
     ]
-  });
-};
+  })
+}

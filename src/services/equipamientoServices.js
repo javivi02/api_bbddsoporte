@@ -1,56 +1,44 @@
 import { sequelize } from '../bbdd/dbConnection.js'
-import { modeloPortatiles } from '../bbdd/models/Portatiles.js'
+import { modeloEquipamiento } from '../bbdd/models/Equipamiento.js'
 import { getPagination, getPagingData } from '../utils/pagination.js'
 
-const Portatiles = modeloPortatiles(sequelize)
+const Equipamiento = modeloEquipamiento(sequelize)
 
-export const getPortatilesServices = async () => {
-  return await Portatiles.findAll()
+export const getEquipamientosServices = async () => {
+  return await Equipamiento.findAll()
 }
 
-export const getPortatileDelete = async (id) => {
-  const portatil = await Portatiles.findByPk(id)
-
-  if (!portatil) return 'NO EXISTE EL PORTATIL'
-
-  return Portatiles.destroy({
-    where: {
-      PortatilID: id
-    }
-  })
-}
-
-export const getPortatilesStockServices = async () => {
+export const getEquipamientosStockServices = async () => {
   const [results, metadata] = await sequelize.query('SELECT\n' +
-    'PortatilID,\n' +
-    'Portatil,\n' +
+    'EquipamientoID,\n' +
+    'Equipamiento,\n' +
     'Pool,\n' +
     'Observaciones,\n' +
     'Modelo\n' +
-    'FROM Portatiles\n' +
-    'WHERE (PortatilID NOT IN (SELECT PortatilID FROM Prestamos WHERE fecha_devolucion IS null AND PortatilID IS NOT null)) AND (Pool =1) AND (Desafectado=0)\n' +
-    'ORDER BY Portatil')
+    'FROM Equipamiento\n' +
+    'WHERE (EquipamientoID NOT IN (SELECT EquipamientoID FROM Prestamos WHERE fecha_devolucion IS null AND EquipamientoID IS NOT null)) AND (Pool =1) AND (Desafectado=0)\n' +
+    'ORDER BY EquipamientoID ASC')
 
   return results
 }
 
-export const getPortatilServices = async (id) => {
-  return await Portatiles.findByPk(id)
+export const getEquipamientoServices = async (id) => {
+  return await Equipamiento.findByPk(id)
 }
 
-export const getUpdateServices = async (id, data) => {
-  const portatil = await Portatiles.findByPk(id)
+export const getEquipamientoUpdateServices = async (id, data) => {
+  const equipamiento = await Equipamiento.findByPk(id)
 
-  if (!portatil) return 'NO EXISTE EL PORTATIL'
+  if (!equipamiento) return 'NO EXISTE EL EQUIPAMIENTO'
 
-  return Portatiles.update(data, {
+  return Equipamiento.update(data, {
     where: {
-      PortatilID: id
+      EquipamientoID: id
     }
   })
 }
 
-export const getPortatilesPaginationServices = async ({ page, perPage, searchWord, condition, order = 'PortatilID' }) => {
+export const getEquipamientoPaginationServices = async ({ page, perPage, searchWord, condition, order = 'EquipamientoID' }) => {
   const { limit, offset } = getPagination(page, perPage)
 
   // Configurar búsqueda y condiciones
@@ -68,13 +56,13 @@ export const getPortatilesPaginationServices = async ({ page, perPage, searchWor
       replacements.push(...Array(8).fill(searchPattern))
 
       return `(
-        CAST(PortatilID AS CHAR) LIKE ? OR
-        Portatil LIKE ? OR
+        CAST(EquipamientoID AS CHAR) LIKE ? OR
+        Equipamiento LIKE ? OR
         Modelo LIKE ? OR
         Direccion_ip_torre LIKE ? OR
         Direccion_ip_wireless LIKE ? OR
-        Portatil_serie LIKE ? OR
-        Portatil_rtve LIKE ? OR
+        Equipamiento_serie LIKE ? OR
+        Equipamiento_rtve LIKE ? OR
         Observaciones LIKE ?
       )`
     })
@@ -123,13 +111,13 @@ export const getPortatilesPaginationServices = async ({ page, perPage, searchWor
   return getPagingData(results, totalItems, page, limit)
 }
 
-export const createPortatilService = async (data) => {
-  return await Portatiles.create(data)
+export const createEquipamientoService = async (data) => {
+  return await Equipamiento.create(data)
 }
 
-export const deletePortatilService = async (id) => {
-  const portatil = await Portatiles.findByPk(id)
-  if (!portatil) return null
-  await portatil.destroy()
+export const deleteEquipamientoService = async (id) => {
+  const equipamiento = await Equipamiento.findByPk(id)
+  if (!equipamiento) return null
+  await equipamiento.destroy()
   return true
 }
