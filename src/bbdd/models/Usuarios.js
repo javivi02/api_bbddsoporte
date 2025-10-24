@@ -32,6 +32,10 @@ export const modeloUsuarios = (sequelize) => {
       type: DataTypes.STRING(8),
       allowNull: true
     },
+    Email: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
     Telefono_movil: {
       type: DataTypes.STRING(20),
       allowNull: true
@@ -44,7 +48,7 @@ export const modeloUsuarios = (sequelize) => {
       type: DataTypes.STRING(20),
       allowNull: true
     },
-    Grupos_usariosID: {
+    Grupos_usuariosID: {
       type: DataTypes.INTEGER,
       allowNull: true
     }

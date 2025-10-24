@@ -5,17 +5,35 @@ import { generateToken } from '../utils/jwt.handle.js'
 
 const Usuarios = modeloUsuarios(sequelize)
 
-const registerNewUser = async ({ Usuario, Contrasena, Matricula_rtve }) => {
-  const isCheckUser = await Usuarios.findAll({ where: { Usuario } })
-  if (isCheckUser.length > 0) return false
+const registerNewUser = async (user) => {
+  const { Usuario, Password, Grupos_usuariosID, Nombre, Apellidos, DNI, Matricula_rtve, Email, Telefono_movil, Telefono_rtve, Telefono_rtve_corto } = user
 
-  const passHash = await encrypt(Contrasena)
+  // Verificar si el usuario ya existe
+  const existingUser = await Usuarios.findOne({
+    where: { Usuario }
+  })
+
+  if (existingUser) {
+    throw new Error('El usuario ya existe')
+  }
+
+  const passHash = await encrypt(Password)
 
   const newUser = {
     Usuario,
-    Contrasena: passHash,
-    Matricula_rtve
+    Password: passHash,
+    Grupos_usuariosID,
+    Nombre,
+    Apellidos,
+    DNI,
+    Matricula_rtve,
+    Email,
+    Telefono_movil,
+    Telefono_rtve,
+    Telefono_rtve_corto
   }
+
+  console.log(newUser)
 
   return Usuarios.create(newUser)
 }
