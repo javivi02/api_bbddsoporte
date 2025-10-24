@@ -1,10 +1,10 @@
 import { Router } from 'express'
 import { getEstacionesTorreController, createEstacionesTorreController, updateEstacionesTorreController, deleteEstacionesTorreController, getEstacionesTorreUbicacionController, getEstacionesTorreControllerID, getEstacionesTorreUbicacionControllerPaginacion, getEstacionesTorreControllerCheckDuplicate } from '../controller/estacionesTorreController.js'
-import { checkSession } from '../middleware/session.js'
+import { checkSessionMiddleware } from '../middleware/checkSessionMiddleware.js'
 
 const router = Router()
 
-router.get('/api/estacionesTorre', checkSession, getEstacionesTorreController)
+router.get('/api/estacionesTorre', checkSessionMiddleware, getEstacionesTorreController)
 router.get('/api/estacionesTorreCheckDuplicate', getEstacionesTorreControllerCheckDuplicate)
 router.get('/api/estacionesTorreUbicacion', getEstacionesTorreUbicacionController)
 router.get('/api/estacionesTorreUbicacionPaginacion', getEstacionesTorreUbicacionControllerPaginacion)

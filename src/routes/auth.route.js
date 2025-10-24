@@ -1,14 +1,14 @@
 import { Router } from 'express'
 import { checkController, loginController, registerController } from '../controller/authController.js'
-import { checkSession } from '../middleware/session.js'
-import { logMiddlewareLogin } from '../middleware/logAuth.js'
+import { checkSessionMiddleware } from '../middleware/checkSessionMiddleware.js'
+import { logAuthLoginMiddleware } from '../middleware/logAuthLoginMiddleware.js'
+import { logAuthRegisterMiddleware } from '../middleware/logAuthRegisterMiddleware.js'
+import { checkRoleMiddleware } from '../middleware/checkRolMiddleware.js'
 
 const router = Router()
 
-router.post('/api/login', logMiddlewareLogin, loginController)
-
-router.post('/api/register', registerController)
-
-router.get('/api/check', checkSession, checkController)
+router.post('/api/login', logAuthLoginMiddleware, loginController)
+router.post('/api/register', logAuthRegisterMiddleware, checkSessionMiddleware, checkRoleMiddleware('Administrador'), registerController)
+router.get('/api/check', checkSessionMiddleware, checkController)
 
 export default router

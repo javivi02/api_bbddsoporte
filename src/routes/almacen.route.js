@@ -1,13 +1,13 @@
 import { Router } from 'express'
 import { getAlmacenController, createAlmacenController, updateAlmacenController, deleteAlmacenController } from '../controller/almacenController.js'
-import { checkSession } from '../middleware/session.js'
+import { checkSessionMiddleware } from '../middleware/checkSessionMiddleware.js'
 
 const router = Router()
 
 
-router.get('/api/almacen', checkSession, getAlmacenController)
-router.post('/api/almacen', checkSession, createAlmacenController)
-router.put('/api/almacen/:id', checkSession, updateAlmacenController)
-router.delete('/api/almacen/:id', checkSession, deleteAlmacenController)
+router.get('/api/almacen', checkSessionMiddleware, getAlmacenController)
+router.post('/api/almacen', checkSessionMiddleware, createAlmacenController)
+router.put('/api/almacen/:id', checkSessionMiddleware, updateAlmacenController)
+router.delete('/api/almacen/:id', checkSessionMiddleware, deleteAlmacenController)
 
 export default router

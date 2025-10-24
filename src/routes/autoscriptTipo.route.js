@@ -1,13 +1,13 @@
 import { Router } from 'express'
 import { getAutoscriptTipoController, createAutoscriptTipoController, updateAutoscriptTipoController, deleteAutoscriptTipoController } from '../controller/autoscriptTipoController.js'
-import { checkSession } from '../middleware/session.js'
+import { checkSessionMiddleware } from '../middleware/checkSessionMiddleware.js'
 
 const router = Router()
 
 
-router.get('/api/autoscriptTipo', checkSession, getAutoscriptTipoController)
-router.post('/api/autoscriptTipo', checkSession, createAutoscriptTipoController)
-router.put('/api/autoscriptTipo/:id', checkSession, updateAutoscriptTipoController)
-router.delete('/api/autoscriptTipo/:id', checkSession, deleteAutoscriptTipoController)
+router.get('/api/autoscriptTipo', checkSessionMiddleware, getAutoscriptTipoController)
+router.post('/api/autoscriptTipo', checkSessionMiddleware, createAutoscriptTipoController)
+router.put('/api/autoscriptTipo/:id', checkSessionMiddleware, updateAutoscriptTipoController)
+router.delete('/api/autoscriptTipo/:id', checkSessionMiddleware, deleteAutoscriptTipoController)
 
 export default router

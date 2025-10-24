@@ -1,13 +1,13 @@
 
 import { Router } from 'express'
 import { getMesasSonidoController, createMesasSonidoController, updateMesasSonidoController, deleteMesasSonidoController } from '../controller/mesasSonidoController.js'
-import { checkSession } from '../middleware/session.js'
+import { checkSessionMiddleware } from '../middleware/checkSessionMiddleware.js'
 
 const router = Router()
 
-router.get('/api/mesasSonido', checkSession, getMesasSonidoController)
-router.post('/api/mesasSonido', checkSession, createMesasSonidoController)
-router.put('/api/mesasSonido/:id', checkSession, updateMesasSonidoController)
-router.delete('/api/mesasSonido/:id', checkSession, deleteMesasSonidoController)
+router.get('/api/mesasSonido', checkSessionMiddleware, getMesasSonidoController)
+router.post('/api/mesasSonido', checkSessionMiddleware, createMesasSonidoController)
+router.put('/api/mesasSonido/:id', checkSessionMiddleware, updateMesasSonidoController)
+router.delete('/api/mesasSonido/:id', checkSessionMiddleware, deleteMesasSonidoController)
 
 export default router

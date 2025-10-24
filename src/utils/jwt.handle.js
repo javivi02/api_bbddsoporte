@@ -1,15 +1,13 @@
 import pkg from 'jsonwebtoken'
-import { logger } from './logs.js'
 
 const { sign, verify } = pkg
 
-const JWT_SECRET = 'clavesecreta'
+const JWT_SECRET = 'nW2M9YcGZRRqcpMGavd2rXUJ8VCi5XrcGJ1DvonTL4Q='
 
-const generateToken = (id) => {
-  const token = sign({ id }, JWT_SECRET, {
+const generateToken = (userData) => {
+  const token = sign(userData, JWT_SECRET, {
     expiresIn: '10h'
   })
-  logger.info(`Token generado para el usario con ID (${id}) -->`, token)
   return token
 }
 

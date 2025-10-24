@@ -13,10 +13,10 @@ export const getPrestamosController = async (req, res) => {
 }
 
 export const getPrestamosPaginationController = async (req, res) => {
-  const { page, perPage, searchWord, condition, order } = req.query
+  const { page, perPage, searchWord, condition, condition2, order } = req.query
 
   try {
-    const result = await getPrestamosPaginationServices(page, perPage, searchWord, condition, order)
+    const result = await getPrestamosPaginationServices(page, perPage, searchWord, condition, condition2, order)
     res.status(200).json(result)
   } catch (error) {
     res.status(500).json({ error: error.message })

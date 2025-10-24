@@ -1,31 +1,29 @@
 import { loginUser, registerNewUser } from '../services/authServices.js'
 
 export const loginController = async (req, res) => {
-
   const user = req.body
 
   try {
-    const resultado = await loginUser(user)
-    if (resultado === 1) return res.send('El usuario no existe')
-    if (resultado === 2) return res.send('La contraseña no es correcta')
+    const result = await loginUser(user)
 
-    res.send(resultado)
-
+    return res.status(200).json({
+      success: true,
+      data: result
+    })
   } catch (error) {
-    console.log(error)
-    res.send('Error al loguear el usuario')
+    return res.status(401).json({
+      success: false,
+      message: error.message
+    })
   }
-
 }
 
 export const registerController = async (req, res) => {
-
   const user = req.body
 
   try {
     const resultado = await registerNewUser(user)
     if (!resultado) return res.send('El usuario ya existe')
-
   } catch (error) {
     console.log(error)
     res.send('Error al crear el usuario')
@@ -35,6 +33,8 @@ export const registerController = async (req, res) => {
 }
 
 export const checkController = async (req, res) => {
+  const user = req.user
+  console.log(user)
   res.status(200)
-  res.send('Usuario con token correcto')
+  res.send(user)
 }

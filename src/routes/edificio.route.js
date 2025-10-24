@@ -1,7 +1,7 @@
 
 import { Router } from 'express'
 import { getEdificioController, createEdificioController, updateEdificioController, deleteEdificioController } from '../controller/edificioController.js'
-import { checkSession } from '../middleware/session.js'
+import { checkSessionMiddleware } from '../middleware/checkSessionMiddleware.js'
 
 const router = Router()
 

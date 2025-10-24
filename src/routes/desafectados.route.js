@@ -1,13 +1,13 @@
 
 import { Router } from 'express'
 import { getDesafectadosController, createDesafectadosController, updateDesafectadosController, deleteDesafectadosController } from '../controller/desafectadosController.js'
-import { checkSession } from '../middleware/session.js'
+import { checkSessionMiddleware } from '../middleware/checkSessionMiddleware.js'
 
 const router = Router()
 
-router.get('/api/desafectados', checkSession, getDesafectadosController)
-router.post('/api/desafectados', checkSession, createDesafectadosController)
-router.put('/api/desafectados/:id', checkSession, updateDesafectadosController)
-router.delete('/api/desafectados/:id', checkSession, deleteDesafectadosController)
+router.get('/api/desafectados', checkSessionMiddleware, getDesafectadosController)
+router.post('/api/desafectados', checkSessionMiddleware, createDesafectadosController)
+router.put('/api/desafectados/:id', checkSessionMiddleware, updateDesafectadosController)
+router.delete('/api/desafectados/:id', checkSessionMiddleware, deleteDesafectadosController)
 
 export default router

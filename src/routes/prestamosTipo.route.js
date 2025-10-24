@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { getPrestamosTipoController } from '../controller/prestamosTipoController.js'
-import { checkSession } from '../middleware/session.js'
+import { checkSessionMiddleware } from '../middleware/checkSessionMiddleware.js'
 
 const router = Router()
 

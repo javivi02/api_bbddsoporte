@@ -1,13 +1,12 @@
 import { Router } from 'express'
 import { getAgendaController, createAgendaController, updateAgendaController, deleteAgendaController } from '../controller/agendaController.js'
-import { checkSession } from '../middleware/session.js'
+import { checkSessionMiddleware } from '../middleware/checkSessionMiddleware.js'
 
 const router = Router()
 
-
-router.get('/api/agenda', checkSession, getAgendaController)
-router.post('/api/agenda', checkSession, createAgendaController)
-router.put('/api/agenda/:id', checkSession, updateAgendaController)
-router.delete('/api/agenda/:id', checkSession, deleteAgendaController)
+router.get('/api/agenda', checkSessionMiddleware, getAgendaController)
+router.post('/api/agenda', checkSessionMiddleware, createAgendaController)
+router.put('/api/agenda/:id', checkSessionMiddleware, updateAgendaController)
+router.delete('/api/agenda/:id', checkSessionMiddleware, deleteAgendaController)
 
 export default router

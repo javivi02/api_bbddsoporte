@@ -1,7 +1,7 @@
 
 import { Router } from 'express'
 import { getSalaMaquinasController, createSalaMaquinasController, updateSalaMaquinasController, deleteSalaMaquinasController } from '../controller/salaMaquinasController.js'
-import { checkSession } from '../middleware/session.js'
+import { checkSessionMiddleware } from '../middleware/checkSessionMiddleware.js'
 
 const router = Router()
 

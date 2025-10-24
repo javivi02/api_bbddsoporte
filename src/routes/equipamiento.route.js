@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { createEquipamientoController, deleteEquipamientoController, getEquipamientoController, getEquipamientoUpdateController, getEquipamientosController, getEquipamientosControllerPaginacion, getEquipamientosStockController } from '../controller/equipamientoController.js'
-import { checkSession } from '../middleware/session.js'
+import { checkSessionMiddleware } from '../middleware/checkSessionMiddleware.js'
 
 const router = Router()
 

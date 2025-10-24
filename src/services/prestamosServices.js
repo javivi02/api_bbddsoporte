@@ -31,7 +31,7 @@ export const getPrestamosServices = async () => {
   return results
 }
 
-export const getPrestamosPaginationServices = async (page, perPage, searchWord, condition, order = 'Prestamos.Fecha_entrega DESC') => {
+export const getPrestamosPaginationServices = async (page, perPage, searchWord, condition, condition2, order = 'Prestamos.Fecha_entrega DESC') => {
   const { limit, offset } = getPagination(page, perPage)
   console.log(page, perPage, searchWord, condition, order)
 
@@ -76,6 +76,10 @@ export const getPrestamosPaginationServices = async (page, perPage, searchWord, 
     conditions.push(`(${condition.trim()})`)
   }
 
+  if (condition2 && condition2.trim() !== '') {
+    conditions.push(`(${condition2.trim()})`)
+  }
+
   const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : ''
 
   // Joins compartidos
@@ -98,9 +102,7 @@ export const getPrestamosPaginationServices = async (page, perPage, searchWord, 
     Email,
     Motivo,
     Prestamos.Observaciones,
-    Usuario_soporte,
-    Usuarios.Nombre AS Soporte_nombre,
-    Usuarios.Apellidos AS Soporte_apellidos
+    Usuario_soporte
   ${joins}
   ${whereClause}
     ORDER BY ${order}

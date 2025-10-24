@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { getServidoresController, createServidoresController, updateServidoresController, deleteServidoresController, getServidoresControllerPaginacion, getServidoresControllerCheckDuplicate } from '../controller/servidoresController.js'
-import { checkSession } from '../middleware/session.js'
+import { checkSessionMiddleware } from '../middleware/checkSessionMiddleware.js'
 
 const router = Router()
 

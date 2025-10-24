@@ -24,8 +24,6 @@ export const getEquipamientosStockServices = async () => {
     INNER JOIN Equipamiento_tipo ON Equipamiento.Equipamiento_tipoID = Equipamiento_tipo.Equipamiento_tipoID
     WHERE (EquipamientoID NOT IN (SELECT EquipamientoID FROM Prestamos WHERE fecha_devolucion IS null AND EquipamientoID IS NOT null)) AND (Pool =1) AND (Desafectado=0)
     ORDER BY EquipamientoID ASC;`)
-
-  console.log(metadata)
   return results
 }
 
